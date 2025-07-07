@@ -163,6 +163,10 @@ else:
 
 length = int(opts.length)
 columns = int(opts.cols)
+
+# print("Print length and columns in memcpy.py")
+# print(length, columns)
+
 if opts.device == "npu":
     if columns > 4:
         raise ValueError(

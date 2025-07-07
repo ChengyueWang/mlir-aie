@@ -1,0 +1,9 @@
+mkdir -p build
+cd build && aiecc.py --aie-generate-xclbin --no-compile-host --xclbin-name=final.xclbin \
+			--no-xchesscc --no-xbridge \
+			--aie-generate-npu-insts --npu-insts-name=insts.bin --verbose ../build/aie.mlir
+Enter the pass AIEAssignBufferss()
+Exit ============= pass AIEAssignBufferss()
+python3: /scratch/chengyue/mlir-aie/my_install/mlir/src/python/MLIRPythonExtension.Core/IRModule.h:462: mlir::python::PyMlirContext::ErrorCapture::~ErrorCapture(): Assertion `errors.empty() && "unhandled captured errors"' failed.
+Aborted (core dumped)
+make: *** [Makefile:39: build/final.xclbin] Error 134

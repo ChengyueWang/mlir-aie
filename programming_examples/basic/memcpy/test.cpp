@@ -64,6 +64,10 @@ int main(int argc, const char *argv[]) {
       test_utils::load_instr_binary(vm["instr"].as<std::string>());
 
   int verbosity = vm["verbosity"].as<int>();
+
+  std::cout << "orginal verbosity " << verbosity << " set it to 1" << std::endl;
+  verbosity = 1;
+
   if (verbosity >= 1)
     std::cout << "Sequence instr count: " << instr_v.size() << std::endl;
 

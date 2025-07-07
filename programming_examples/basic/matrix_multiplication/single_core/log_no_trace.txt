@@ -1,0 +1,60 @@
+rm -rf _build
+mkdir -p _build
+cd _build &&  cmake -E env CXXFLAGS="-std=c++23 -ggdb -DDTYPE_IN=int16_t -DDTYPE_OUT=int32_t -DDTYPE_ACC=int32_t" \
+	cmake `echo /scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/..` -D CMAKE_C_COMPILER=gcc-13 -D CMAKE_CXX_COMPILER=g++-13 -DTARGET_NAME=single_core -Dsubdir=single_core
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-13 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-13 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build
+cd _build &&  cmake --build . --config Release
+gmake[1]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build'
+gmake[2]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build'
+gmake[3]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build'
+gmake[3]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build'
+gmake[3]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build'
+[ 33%] Building CXX object CMakeFiles/single_core.dir/scratch/chengyue/mlir-aie/runtime_lib/test_lib/test_utils.cpp.o
+[ 66%] Building CXX object CMakeFiles/single_core.dir/single_core/test.cpp.o
+[100%] Linking CXX executable single_core
+gmake[3]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build'
+[100%] Built target single_core
+gmake[2]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build'
+gmake[1]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/_build'
+cp _build/single_core single_core.exe 
+mkdir -p build
+python3 /scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/single_core.py -m 32 -k 32 -n 32 --b-col-maj 0 --dev npu2 -M 1024 -K 2048 -N 1024 --dtype_in i16 --dtype_out i32 --trace_size 0 > build/aie_1024x2048x1024_32x32x32.mlir
+mkdir -p build
+cd build && /scratch/chengyue/mlir-aie/ironenv/lib/python3.12/site-packages/llvm-aie/bin/clang++ -O2 -std=c++20 --target=aie2p-none-unknown-elf -Wno-parentheses -Wno-attributes -Wno-macro-redefined -Wno-empty-body -DNDEBUG -I /scratch/chengyue/mlir-aie/ironenv/lib/python3.12/site-packages/mlir_aie/include  -Di16_i32_ONLY -DDIM_M=32 -DDIM_K=32 -DDIM_N=32 -c /scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/../../../../aie_kernels/aie2p/mm.cc -o mm_32x32x32.o
+mkdir -p build
+cd build && aiecc.py --alloc-scheme=basic-sequential --aie-generate-xclbin --no-compile-host --xclbin-name=final_1024x2048x1024_32x32x32.xclbin \
+			--no-xchesscc --no-xbridge --peano /scratch/chengyue/mlir-aie/ironenv/lib/python3.12/site-packages/llvm-aie \
+			--aie-generate-npu-insts --npu-insts-name=insts_1024x2048x1024_32x32x32.txt ../build/aie_1024x2048x1024_32x32x32.mlir
+
+Generating: /scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/build/aie_1024x2048x1024_32x32x32.mlir.prj/aie_cdo_elfs.bin
+Generating: /scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/build/aie_1024x2048x1024_32x32x32.mlir.prj/aie_cdo_init.bin
+Generating: /scratch/chengyue/mlir-aie/programming_examples/basic/matrix_multiplication/single_core/build/aie_1024x2048x1024_32x32x32.mlir.prj/aie_cdo_enable.bin
+export XRT_HACK_UNSECURE_LOADING_XCLBIN=1 && \
+ ./single_core.exe -x build/final_1024x2048x1024_32x32x32.xclbin -i build/insts_1024x2048x1024_32x32x32.txt -k MLIR_AIE -M 1024 -K 2048 -N 1024 --b_col_maj 0
+
+
+Avg NPU matmul time: 30792us.
+Avg NPU gflops: 139.483
+
+Min NPU matmul time: 30792us.
+Max NPU gflops: 139.483
+
+Max NPU matmul time: 30792us.
+Min NPU gflops: 139.483
+
+PASS!
+

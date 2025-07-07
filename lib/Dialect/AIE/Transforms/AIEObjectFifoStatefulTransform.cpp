@@ -69,6 +69,9 @@ public:
 class DMAChannelAnalysis {
   DenseMap<std::tuple<Value, DMAChannelDir, int>, int> channelsPerTile;
 
+
+
+  
 public:
   DMAChannelAnalysis(DeviceOp &device) {
     // go over the channels used for each tile and update channel map
@@ -397,12 +400,79 @@ struct AIEObjectFifoStatefulTransformPass
     return locks;
   }
 
+
+  /// CY: Function to calculate total memory usage on a specific tile
+  /// based on all buffers allocated to that tile from buffersPerFifo map
+  int calculateCurrentUsedMemory(TileOp targetTile, 
+                                DenseMap<ObjectFifoCreateOp, std::vector<BufferOp>>& buffersPerFifo,
+                                std::vector<BufferOp>& buffers
+                              ) {
+    int totalUsedMemory = 0;
+    
+    // Iterate through all ObjectFifos and their buffers
+    for (auto& [fifoOp, bufferList] : buffersPerFifo) {
+      for (auto& buffer : bufferList) {
+        // Check if this buffer is allocated on the target tile
+        if (buffer.getTile() == targetTile.getResult()) {
+          auto bufferType = buffer.getType();
+          auto numElements = bufferType.getNumElements();
+          auto elementType = bufferType.getElementType();
+          auto elementSizeBytes = elementType.getIntOrFloatBitWidth() / 8;
+          auto bufferSizeBytes = numElements * elementSizeBytes;
+          totalUsedMemory += bufferSizeBytes;
+        }
+      }
+    }
+
+    // Also count buffers that are not in buffersPerFifo
+    for (auto& buffer : buffers) {
+      // Check if this buffer is allocated on the target tile
+      if (buffer.getTile() == targetTile.getResult()) {
+        auto bufferType = buffer.getType();
+        auto numElements = bufferType.getNumElements();
+        auto elementType = bufferType.getElementType();
+        auto elementSizeBytes = elementType.getIntOrFloatBitWidth() / 8;
+        auto bufferSizeBytes = numElements * elementSizeBytes;
+        totalUsedMemory += bufferSizeBytes;
+      }
+    }
+    
+    return totalUsedMemory;
+  }
+
+  /// Helper function to find a tile at specific coordinates.
+  /// If a tile is not found, it creates a new one and returns it.
+  TileOp findOrCreateTile(OpBuilder &builder, DeviceOp &dev, int col, int row) {
+    // First, try to find an existing tile
+    for (auto tile : dev.getOps<TileOp>()) {
+      if (tile.getCol() == col && tile.getRow() == row) {
+        std::cout << "             Found existing neighbor tile at (" << col
+                  << ", " << row << ")" << std::endl;
+        return tile;
+      }
+    }
+
+    // If not found, create a new one.
+    std::cout << "             No existing tile found at (" << col << ", " << row
+              << "). Creating a new one." << std::endl;
+    OpBuilder::InsertionGuard g(builder);
+    // Ensure the new tile is inserted before the terminator of the device body.
+    builder.setInsertionPoint(dev.getBody()->getTerminator());
+    auto newTile = builder.create<TileOp>(builder.getUnknownLoc(), col, row);
+    return newTile;
+  }
+
   /// Function used to create objectFifo elements and their locks.
   /// It maps the input objectFifo to associated buffers and locks.
   void createObjectFifoElements(OpBuilder &builder, LockAnalysis &lockAnalysis,
                                 ObjectFifoCreateOp op, int share_direction) {
     if (!op.size())
       return;
+
+    std::cout << "Entering createObjectFifoElements()" << std::endl;
+
+    // Debug: Print ObjectFifo details
+    std::cout << "== DEBUG: ObjectFifo '" << op.name().str() << "' has size " << op.size() << std::endl;
 
     std::vector<BufferOp> buffers;
     auto fifo = llvm::cast<AIEObjectFifoType>(op.getElemType());
@@ -467,12 +537,12 @@ struct AIEObjectFifoStatefulTransformPass
     }
 
     // Reset opbuilder location to after the last tile declaration
-    Operation *t = nullptr;
+    // Operation *t = nullptr;
     auto dev = op->getParentOfType<DeviceOp>();
-    for (auto tile_op : dev.getBody()->getOps<TileOp>()) {
-      t = tile_op.getOperation();
-    }
-    builder.setInsertionPointAfter(t);
+    // for (auto tile_op : dev.getBody()->getOps<TileOp>()) {
+    //   t = tile_op.getOperation();
+    // }
+    // builder.setInsertionPointAfter(t);
     for (int i = 0; i < numElem; i++) {
       mlir::ElementsAttr initValues = nullptr;
       if (!creation_tile.isShimTile()) {
@@ -480,12 +550,104 @@ struct AIEObjectFifoStatefulTransformPass
           initValues =
               llvm::cast<mlir::ElementsAttr>(op.getInitValues().value()[i]);
         }
+
+        // check if current tile can hold the new buffer or not
+        int numElements = elemType.getNumElements();
+        auto elementType = elemType.getElementType();
+        auto elementSizeBits = elementType.getIntOrFloatBitWidth();
+        auto totalSizeBytes = numElements * elementSizeBits / 8;
+
+        auto &targetModel = dev.getTargetModel();
+
+        AIEArch arch = targetModel.getTargetArch();
+        std::cout << "DEBUG: Using AIE Architecture: " << stringifyAIEArch(arch).str()
+                  << " with " << targetModel.columns() << " columns." << std::endl;
+
+
+        int maxDataMemorySize = 0;
+        if (creation_tile.isMemTile())
+          maxDataMemorySize = targetModel.getMemTileSize(); // getMemTileSize returns in Bytes
+        else
+          maxDataMemorySize = targetModel.getLocalMemorySize(); // getLocalMemorySize returns in Bytes
+        // also need to count the buffers that are not in buffersPerFifo 
+        int currentUsedMemory = calculateCurrentUsedMemory(creation_tile, buffersPerFifo, buffers);
+
+        // Check if current tile can hold the new buffer or not
+        // if (totalSizeBytes > maxDataMemorySize) {
+        std::cout <<  "========= ObjectFifo '" << op.name().str()  << "' requires " << totalSizeBytes 
+                      << " bytes at tile (" << creation_tile.getCol() << ", " << creation_tile.getRow() 
+                      << "), which has " << maxDataMemorySize << " bytes available"<< std::endl;
+        // Use warning instead:
+        std::cout << "           Current used memory on this tile: " << currentUsedMemory << " bytes" << std::endl;
+        std::cout << "           Memory after adding this buffer: " << (currentUsedMemory + totalSizeBytes) << " bytes" << std::endl;
+        std::cout << "           Remaining memory: " << static_cast<int>(maxDataMemorySize - currentUsedMemory - totalSizeBytes) << " bytes" << std::endl;
+
+
+        if (static_cast<int>(currentUsedMemory + totalSizeBytes) > maxDataMemorySize) {
+          std::cout << "             ObjectFifo '" << op.name().str() 
+                          << "' requires " << totalSizeBytes 
+                          << " bytes but tile (" << creation_tile.getCol() 
+                          << ", " << creation_tile.getRow() << ") only has " 
+                          << (maxDataMemorySize - currentUsedMemory) << " bytes remaining. "
+                          << "Try to allocate the buffer on the neighbour tiles." << std::endl;
+          // if not, check if the neighbour can hold the new buffer or not
+
+          // Find neighbor tiles with shared memory
+          std::vector<TileOp> neighborTiles;
+          int currentCol = creation_tile.getCol();
+          int currentRow = creation_tile.getRow();
+
+          // print currentcol and targetModel columns
+          std::cout << "             Current tile column: " << currentCol << std::endl;
+          std::cout << "             Target model columns: " << targetModel.columns() << std::endl;
+
+          // Check tile to the left
+          if (currentCol > 0) {
+            TileOp leftTile = findOrCreateTile(builder, dev, currentCol - 1, currentRow);
+            int share_direction = 0;
+            if (isSharedMemory(creation_tile, leftTile, &share_direction)) {
+              neighborTiles.push_back(leftTile);
+            }
+          }
+
+          // Check tile to the right
+          if (currentCol < (targetModel.columns() - 1)) {
+            TileOp rightTile = findOrCreateTile(builder, dev, currentCol + 1, currentRow);
+            int share_direction = 0;
+            if (isSharedMemory(creation_tile, rightTile, &share_direction)) {
+              neighborTiles.push_back(rightTile);
+            }
+          }
+
+          // try to allocate on neighbor tiles
+          if (!neighborTiles.empty()) {
+            std::cout << "             Found " << neighborTiles.size() << " valid neighbor tiles with shared memory: ";
+            for (auto& tile : neighborTiles) {
+              std::cout << "(" << tile.getCol() << ", " << tile.getRow() << ") ";
+
+              // Try to allocate on this neighbor tile
+              int neighborUsedMemory = calculateCurrentUsedMemory(tile, buffersPerFifo, buffers);
+              if (static_cast<int>(neighborUsedMemory + totalSizeBytes) <= maxDataMemorySize) {
+                std::cout << "             Found suitable neighbor tile (" << tile.getCol() << ", " << tile.getRow()
+                          << ") with " << (maxDataMemorySize - neighborUsedMemory) << " bytes remaining." << std::endl;
+                // Allocate buffer on neighbor tile, change creation_tile to be this neighbour tile
+                creation_tile = tile;
+                break;
+              }
+            }
+          } else {
+            std::cout << "             No valid neighbor tiles with shared memory found." << std::endl;
+          }
+
+        }
+        builder.setInsertionPointAfter(creation_tile.getOperation());        
         auto buff = builder.create<BufferOp>(
             builder.getUnknownLoc(), elemType, creation_tile,
             builder.getStringAttr(op.name().str() + "_buff_" +
                                   std::to_string(of_elem_index)),
             /*address*/ nullptr, initValues,
             /*mem_bank*/ nullptr);
+
         buffers.push_back(buff);
       }
       of_elem_index++;
@@ -508,6 +670,40 @@ struct AIEObjectFifoStatefulTransformPass
         builder, lockAnalysis, op, numElem, joinDistribFactor, creation_tile, repeatCount);
     buffersPerFifo[op] = buffers;
     locksPerFifo[op] = locks;
+    
+    // Debug: Print entire buffersPerFifo map
+    std::cout << "=== DEBUG: entire buffersPerFifo map after adding '" << op.name().str() << "' ===" << std::endl;
+    for (auto& [fifoOp, bufferList] : buffersPerFifo) {
+      std::cout << "  ObjectFifo '" << fifoOp.name().str() << "' has " << bufferList.size() << " buffers:" << std::endl;
+      for (size_t i = 0; i < bufferList.size(); i++) {
+        auto symName = bufferList[i].getSymName();
+        std::string symNameStr = symName.has_value() ? symName.value().str() : "no_name";
+        auto bufferType = bufferList[i].getType();
+        auto numElements = bufferType.getNumElements();
+        auto elementType = bufferType.getElementType();
+        auto elementSizeBytes = elementType.getIntOrFloatBitWidth() / 8;
+        auto totalSizeBytes = numElements * elementSizeBytes;
+        std::cout << "    Buffer[" << i << "]: " << symNameStr 
+                  << " (Elements: " << numElements 
+                  << ", ElementSize: " << elementSizeBytes << " bytes"
+                  << ", TotalSize: " << totalSizeBytes << " bytes)" << std::endl;
+      }
+    }
+    
+    // Debug: Print entire locksPerFifo map
+    std::cout << "=== DEBUG: ENTIRE locksPerFifo map after adding '" << op.name().str() << "' ===" << std::endl;
+    for (auto& [fifoOp, lockList] : locksPerFifo) {
+      std::cout << "  ObjectFifo '" << fifoOp.name().str() << "' has " << lockList.size() << " locks:" << std::endl;
+      for (size_t i = 0; i < lockList.size(); i++) {
+        auto lockID = lockList[i].getLockIDValue();
+        auto symName = lockList[i].getSymName();
+        std::string symNameStr = symName.has_value() ? symName.value().str() : "no_name";
+        std::cout << "    Lock[" << i << "]: ID=" << lockID << ", Symbol=" << symNameStr << std::endl;
+      }
+    }
+
+    std::cout << "======================== Exiting ===========================" << std::endl;
+
   }
 
   /// Function that returns a pointer to the block of a Region
@@ -594,6 +790,10 @@ struct AIEObjectFifoStatefulTransformPass
   void createDMA(DeviceOp &device, OpBuilder &builder, ObjectFifoCreateOp op,
                  DMAChannelDir channelDir, int channelIndex, int lockMode,
                  BDDimLayoutArrayAttr dims, BDPadLayoutArrayAttr pad_dims) {
+
+    // std::cout << "Entering createDMA()" << std::endl;
+
+    
     if (op.getProducerTileOp().isShimTile()) {
       createShimDMA(device, builder, op, channelDir, channelIndex, lockMode,
                     dims);
@@ -607,6 +807,9 @@ struct AIEObjectFifoStatefulTransformPass
       createAIETileDMA(device, builder, op, channelDir, channelIndex, lockMode,
                        dims);
     }
+
+    // std::cout << "Exiting createDMA()" << std::endl;
+
   }
 
   /// Function used to create a MemOp region with a DMA channel.
@@ -615,6 +818,9 @@ struct AIEObjectFifoStatefulTransformPass
                         ObjectFifoCreateOp op, DMAChannelDir channelDir,
                         int channelIndex, int lockMode,
                         BDDimLayoutArrayAttr dims) {
+
+    std::cout << "Entering createAIETileDMA()" << std::endl;
+
     size_t numBlocks = op.size();
     if (numBlocks == 0)
       return;
@@ -714,6 +920,9 @@ struct AIEObjectFifoStatefulTransformPass
                      ObjectFifoCreateOp op, DMAChannelDir channelDir,
                      int channelIndex, int lockMode,
                      BDDimLayoutArrayAttr dims) {
+
+    std::cout << "Entering createShimDMA()" << std::endl;
+
     size_t numBlocks = externalBuffersPerFifo[op].size();
     if (numBlocks == 0)
       return;
@@ -743,6 +952,10 @@ struct AIEObjectFifoStatefulTransformPass
         builder.create<EndOp>(builder.getUnknownLoc());
       }
       producerDMA = newDMAOp.getOperation();
+      
+      std::cout << "== Created new MemTileDMAOp for tile(col " << objFifoTileOp.getCol() 
+                << ", row " << objFifoTileOp.getRow() << ") with " << numBlocks 
+                << " blocks" << std::endl;
     }
 
     Block *endBlock = findEndOpBlock(producerDMA->getRegion(0));
@@ -789,6 +1002,9 @@ struct AIEObjectFifoStatefulTransformPass
                         int channelIndex, int lockMode,
                         BDDimLayoutArrayAttr dims,
                         BDPadLayoutArrayAttr padDimensions) {
+
+    std::cout << "Entering createMemTileDMA()" << std::endl;
+
     size_t numBlocks = op.size();
     if (numBlocks == 0)
       return;
@@ -803,6 +1019,12 @@ struct AIEObjectFifoStatefulTransformPass
     int repeatCount = 1;
     if (op.getRepeatCount().has_value())
       repeatCount = op.getRepeatCount().value();
+
+
+
+
+
+    std::cout << "== ObjectFifo " << op.name().str() << " created with " << numBlocks << " blocks " << lenOut << " elements." << std::endl;
 
     // search for the buffers/locks (based on if this objFifo has a link)
     // identify size difference between input and output memrefs
@@ -880,10 +1102,13 @@ struct AIEObjectFifoStatefulTransformPass
         producerDMA = dmaOp.getOperation();
         break;
       }
-    }
-
-    // if none exists, create one
+    }    // if none exists, create one
     TileOp objFifoTileOp = target.getProducerTileOp();
+    
+    std::cout << "== Target ObjectFifo: " << target.name().str() << std::endl;
+    std::cout << "== Target producer tile: tile(col " << objFifoTileOp.getCol() << ", row " << objFifoTileOp.getRow() << ")" << std::endl;
+
+    
     if (producerDMA == nullptr) {
       OpBuilder::InsertionGuard g(builder);
       builder.setInsertionPoint(device.getBody()->getTerminator());
@@ -895,6 +1120,8 @@ struct AIEObjectFifoStatefulTransformPass
         builder.create<EndOp>(builder.getUnknownLoc());
       }
       producerDMA = newDMAOp.getOperation();
+
+      std::cout << "== Created new MemTileDMAOp for tile(col " << objFifoTileOp.getCol()  << ", row " << objFifoTileOp.getRow() << ")" << std::endl;
     }
 
     Block *endBlock = findEndOpBlock(producerDMA->getRegion(0));
@@ -907,6 +1134,12 @@ struct AIEObjectFifoStatefulTransformPass
     builder.create<DMAStartOp>(builder.getUnknownLoc(), channelDir,
                                channelIndex, /*repeatCout*/ 0, bdBlock,
                                endBlock);
+    
+    // Debug print for DMA start operation
+    std::cout << "== DEBUG: Created DMAStartOp in MemTileDMA - Direction: " 
+              << (channelDir == DMAChannelDir::S2MM ? "S2MM" : "MM2S")
+              << ", Channel: " << channelIndex << std::endl;
+    
     if (lastDmaBlock != nullptr)
       lastDmaBlock->getTerminator()->setSuccessor(dmaBlock, 1);
 
@@ -921,10 +1154,13 @@ struct AIEObjectFifoStatefulTransformPass
       if (elemIndex >= buffersPerFifo[target].size())
         break;
       for (int r = 0; r < repeatCount * joinDistribFactor; r++) {
-        if (totalBlocks == numBlocks * repeatCount * joinDistribFactor - 1)
+        if (totalBlocks == numBlocks * repeatCount * joinDistribFactor - 1) {
           succ = bdBlock;
-        else
+          std::cout << "== DEBUG: Last BD block - creating circular link back to first BD block" << std::endl;
+        } else {
           succ = builder.createBlock(endBlock);
+          std::cout << "== DEBUG: Created new BD block in chain" << std::endl;
+        }
 
         builder.setInsertionPointToStart(curr);
         int offset = 0;
@@ -946,6 +1182,12 @@ struct AIEObjectFifoStatefulTransformPass
         } else {
           lockIndex = elemIndex;
         }
+        
+        // Debug print for BD block creation
+        std::cout << "== DEBUG: Creating BD Block #" << totalBlocks 
+                  << " - Buffer[" << elemIndex << "], Offset: " << offset
+                  << ", Length: " << lenOut << ", LockIndex: " << lockIndex << std::endl;
+        
         createBdBlock<BufferOp>(builder, target, lockMode, acqNum, relNum,
                                 buffersPerFifo[target][elemIndex], offset,
                                 lenOut, channelDir, lockIndex, succ, dims,
@@ -1435,6 +1677,9 @@ struct AIEObjectFifoStatefulTransformPass
   }
 
   void runOnOperation() override {
+
+    std::cout << "Enter the pass AIEObjectFifoStatefulTransformPass" << std::endl; // Debug message
+
     DeviceOp device = getOperation();
     LockAnalysis lockAnalysis(device);
     DMAChannelAnalysis dmaAnalysis(device);
@@ -1911,6 +2156,10 @@ struct AIEObjectFifoStatefulTransformPass
     computeTopologicalSorting(sorted);
     for (auto *op : llvm::reverse(sorted))
       op->erase();
+
+    std::cout << "Exit the pass AIEObjectFifoStatefulTransformPass" << std::endl; // Debug message
+
+
   }
 };
 

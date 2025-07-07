@@ -1,0 +1,70 @@
+rm -rf _build
+mkdir -p _build
+cd _build &&  cmake -E env CXXFLAGS="-std=c++23 -ggdb" cmake `echo /scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2` -D CMAKE_C_COMPILER=gcc-13 -D CMAKE_CXX_COMPILER=g++-13 -DTARGET_NAME=ext_to_core_L2 
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-13 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-13 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build
+cd _build &&  cmake --build . --config Release
+gmake[1]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build'
+gmake[2]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build'
+gmake[3]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build'
+gmake[3]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build'
+gmake[3]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build'
+[ 33%] Building CXX object CMakeFiles/ext_to_core_L2.dir/scratch/chengyue/mlir-aie/runtime_lib/test_lib/test_utils.cpp.o
+[ 66%] Building CXX object CMakeFiles/ext_to_core_L2.dir/test.cpp.o
+[100%] Linking CXX executable ext_to_core_L2
+gmake[3]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build'
+[100%] Built target ext_to_core_L2
+gmake[2]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build'
+gmake[1]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/_build'
+cp _build/ext_to_core_L2 ext_to_core_L2.exe 
+mkdir -p build
+python3 /scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/ext_to_core_L2_placed.py npu2 > build/aie.mlir
+mkdir -p build
+cd build && aiecc.py --aie-generate-xclbin --no-compile-host --xclbin-name=final.xclbin \
+			--no-xchesscc --no-xbridge \
+			--aie-generate-npu-insts --npu-insts-name=insts.bin --verbose ../build/aie.mlir
+Found xchesscc at /proj/xbuilds/2024.2_INT_1113_1001/installs/all_platforms/Vitis/2024.2/aietools
+Compiling ../build/aie.mlir
+created temporary directory /scratch/chengyue/mlir-aie/programming_examples/basic/02_cy_external_mem_to_core_L2/build/aie.mlir.prj
+Running: builtin.module(lower-affine,aie-canonicalize-device,aie.device(aie-assign-lock-ids,aie-register-objectFifos,aie-objectFifo-stateful-transform{ dynamic-objFifos=0 },aie-assign-bd-ids,aie-lower-cascade-flows,aie-lower-broadcast-packet,aie-lower-multicast,aie-assign-tile-controller-ids,aie-generate-column-control-overlay{ route-shim-to-tile-ctrl=0 },aie-assign-buffer-addresses),convert-scf-to-cf)
+Error running pass pipeline:  builtin.module(lower-affine,aie-canonicalize-device,aie.device(aie-assign-lock-ids,aie-register-objectFifos,aie-objectFifo-stateful-transform{ dynamic-objFifos=0 },aie-assign-bd-ids,aie-lower-cascade-flows,aie-lower-broadcast-packet,aie-lower-multicast,aie-assign-tile-controller-ids,aie-generate-column-control-overlay{ route-shim-to-tile-ctrl=0 },aie-assign-buffer-addresses),convert-scf-to-cf) Failure while executing pass pipeline:
+error: unknown: Failed to allocate buffer: "out0_buff_0" with size: 256000 bytes.
+ note: unknown: see current operation: %9 = "aie.buffer"(%1) <{sym_name = "out0_buff_0"}> : (index) -> memref<64000xi32>
+error: "-":4:21: 'aie.tile' op Not all requested buffers fit in the available memory.
+  
+ note: "-":4:21: see current operation: %1 = "aie.tile"() <{col = 0 : i32, row = 1 : i32}> {controller_id = #aie.packet_info<pkt_type = 0, pkt_id = 26>} : () -> index
+ note: "-":4:21: Current configuration of buffers in bank(s) : MemoryMap:
+  (no stack allocated)
+  	bank : 0	0x0-0xFFFF
+  	bank : 1	0x10000-0x1FFFF
+  	bank : 2	0x20000-0x2FFFF
+  	bank : 3	0x30000-0x3FFFF
+  	bank : 4	0x40000-0x4FFFF
+  	bank : 5	0x50000-0x5FFFF
+  	bank : 6	0x60000-0x6FFFF
+  	bank : 7	0x70000-0x7FFFF
+  
+error: "-":4:21: 'aie.tile' op allocated buffers exceeded available memory
+  (no stack allocated)
+  
+ note: "-":4:21: see current operation: %1 = "aie.tile"() <{col = 0 : i32, row = 1 : i32}> {controller_id = #aie.packet_info<pkt_type = 0, pkt_id = 26>} : () -> index
+ note: "-":4:21: MemoryMap:
+  	out0_buff_0 	: 0x0-0x3E7FF 	(256000 bytes)
+  	out0_buff_1 	: 0x3E800-0x7CFFF 	(256000 bytes)
+  	in0_cons_buff_0 	: 0x7D000-0xBB7FF 	(256000 bytes)
+  	in0_cons_buff_1 	: 0xBB800-0xF9FFF 	(256000 bytes)
+  
+

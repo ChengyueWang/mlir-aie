@@ -16,6 +16,8 @@ import aie.utils.test as test_utils
 
 def main(opts):
 
+    print("Enter python test.py")
+
     # Load instruction sequence
     instr_v = xrt_utils.read_insts(opts.instr)
 
