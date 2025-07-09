@@ -401,7 +401,7 @@ struct AIEObjectFifoStatefulTransformPass
   }
 
 
-  /// CY: Function to calculate total memory usage on a specific tile
+  /// Function to calculate total memory usage on a specific tile
   /// based on all buffers allocated to that tile from buffersPerFifo map
   int calculateCurrentUsedMemory(TileOp targetTile, 
                                 DenseMap<ObjectFifoCreateOp, std::vector<BufferOp>>& buffersPerFifo,
@@ -442,7 +442,9 @@ struct AIEObjectFifoStatefulTransformPass
 
   /// Helper function to find a tile at specific coordinates.
   /// If a tile is not found, it creates a new one and returns it.
-  TileOp findOrCreateTile(OpBuilder &builder, DeviceOp &dev, int col, int row) {
+  /// hostTile is the original tile from which we are searching for neighbors.
+  /// we create the new tile below the hostTile 
+  TileOp findOrCreateTile(OpBuilder &builder, DeviceOp &dev, TileOp hostTile, int col, int row) {
     // First, try to find an existing tile
     for (auto tile : dev.getOps<TileOp>()) {
       if (tile.getCol() == col && tile.getRow() == row) {
@@ -456,8 +458,7 @@ struct AIEObjectFifoStatefulTransformPass
     std::cout << "             No existing tile found at (" << col << ", " << row
               << "). Creating a new one." << std::endl;
     OpBuilder::InsertionGuard g(builder);
-    // Ensure the new tile is inserted before the terminator of the device body.
-    builder.setInsertionPoint(dev.getBody()->getTerminator());
+    builder.setInsertionPoint(hostTile.getOperation());
     auto newTile = builder.create<TileOp>(builder.getUnknownLoc(), col, row);
     return newTile;
   }
@@ -603,7 +604,7 @@ struct AIEObjectFifoStatefulTransformPass
 
           // Check tile to the left
           if (currentCol > 0) {
-            TileOp leftTile = findOrCreateTile(builder, dev, currentCol - 1, currentRow);
+            TileOp leftTile = findOrCreateTile(builder, dev, creation_tile, currentCol - 1, currentRow);
             int share_direction = 0;
             if (isSharedMemory(creation_tile, leftTile, &share_direction)) {
               neighborTiles.push_back(leftTile);
@@ -612,7 +613,7 @@ struct AIEObjectFifoStatefulTransformPass
 
           // Check tile to the right
           if (currentCol < (targetModel.columns() - 1)) {
-            TileOp rightTile = findOrCreateTile(builder, dev, currentCol + 1, currentRow);
+            TileOp rightTile = findOrCreateTile(builder, dev, creation_tile, currentCol + 1, currentRow);
             int share_direction = 0;
             if (isSharedMemory(creation_tile, rightTile, &share_direction)) {
               neighborTiles.push_back(rightTile);

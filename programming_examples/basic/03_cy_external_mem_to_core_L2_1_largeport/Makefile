@@ -2,7 +2,7 @@
 # 
 # This file licensed under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
-# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception --alloc-scheme=basic-sequential
 # 
 ##===----------------------------------------------------------------------===##
 
@@ -37,7 +37,7 @@ inst/insts.bin: ${srcdir}/${aie_py_src}
 build/final.xclbin: build/aie.mlir
 	mkdir -p ${@D}
 	cd ${@D} && aiecc.py --aie-generate-xclbin --no-compile-host --xclbin-name=${@F} \
-				--alloc-scheme=basic-sequential --no-xchesscc --no-xbridge \
+				--no-xchesscc --no-xbridge \
 				--aie-generate-npu-insts --npu-insts-name=insts.bin --verbose $(<:%=../%)
 
 ${targetname}.exe: ${srcdir}/test.cpp

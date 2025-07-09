@@ -9,6 +9,10 @@ module {
     memref.global "public" @in0_cons : memref<96000xi32>
     memref.global "public" @in0 : memref<96000xi32>
     %shim_noc_tile_0_0 = aie.tile(0, 0)
+    %mem_tile_1_1 = aie.tile(1, 1)
+    %in0_cons_buff_1 = aie.buffer(%mem_tile_1_1) {sym_name = "in0_cons_buff_1"} : memref<96000xi32> 
+    %in0_cons_prod_lock_0 = aie.lock(%mem_tile_1_1, 0) {init = 2 : i32, sym_name = "in0_cons_prod_lock_0"}
+    %in0_cons_cons_lock_0 = aie.lock(%mem_tile_1_1, 1) {init = 0 : i32, sym_name = "in0_cons_cons_lock_0"}
     %mem_tile_0_1 = aie.tile(0, 1)
     %out1_cons_buff_1 = aie.buffer(%mem_tile_0_1) {sym_name = "out1_cons_buff_1"} : memref<8xi32> 
     %out1_cons_prod_lock_0 = aie.lock(%mem_tile_0_1, 0) {init = 2 : i32, sym_name = "out1_cons_prod_lock_0"}
@@ -70,10 +74,6 @@ module {
       aiex.npu.dma_memcpy_nd(%arg2[0, 0, 0, 0][1, 1, 1, 8][0, 0, 0, 1]) {id = 0 : i64, metadata = @out0} : memref<96000xi32>
       aiex.npu.dma_wait {symbol = @out0}
     }
-    %mem_tile_1_1 = aie.tile(1, 1)
-    %in0_cons_buff_1 = aie.buffer(%mem_tile_1_1) {sym_name = "in0_cons_buff_1"} : memref<96000xi32> 
-    %in0_cons_prod_lock_0 = aie.lock(%mem_tile_1_1, 0) {init = 2 : i32, sym_name = "in0_cons_prod_lock_0"}
-    %in0_cons_cons_lock_0 = aie.lock(%mem_tile_1_1, 1) {init = 0 : i32, sym_name = "in0_cons_cons_lock_0"}
     aie.shim_dma_allocation @in0(MM2S, 0, 0)
     %memtile_dma_0_1 = aie.memtile_dma(%mem_tile_0_1) {
       %0 = aie.dma_start(S2MM, 0, ^bb1, ^bb3)
