@@ -2342,3 +2342,4 @@ std::unique_ptr<OperationPass<DeviceOp>>
 AIE::createAIEObjectFifoStatefulTransformPass() {
   return std::make_unique<AIEObjectFifoStatefulTransformPass>();
 }
+
