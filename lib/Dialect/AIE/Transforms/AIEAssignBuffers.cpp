@@ -477,8 +477,6 @@ struct AIEAssignBufferAddressesPass
 
   void runOnOperation() override {
 
-    std::cout << "Enter the pass AIEAssignBufferss()" << std::endl; // Debug message
-
     DeviceOp device = getOperation();
     OpBuilder builder = OpBuilder::atBlockTerminator(device.getBody());
     // Ensure all BufferOps are globally defined at the device level.
@@ -517,11 +515,6 @@ struct AIEAssignBufferAddressesPass
         }
       }
     }
-
-
-    std::cout << "Exit ============= pass AIEAssignBufferss()" << std::endl; // Debug message
-
-
 
   }
 };
