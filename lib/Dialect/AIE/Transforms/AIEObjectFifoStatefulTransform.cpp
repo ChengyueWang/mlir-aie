@@ -117,23 +117,36 @@ public:
     else
       maxChannelNum = tileOp.getNumDestConnections(WireBundle::DMA);
 
+    const auto &targetModel = getTargetModel(tileOp);
+    int maxChannelNumForAdjacentTile = targetModel.getMaxChannelNumForAdjacentTile(tileOp.getCol(), tileOp.getRow());
+
     // if has cross tile buffers, only allocate on channel 0-3, and if cannot, return 0
     if (hasCrossTileIssue) {
-      maxChannelNum = std::min(maxChannelNum, 4);
+      maxChannelNum = std::min(maxChannelNum, maxChannelNumForAdjacentTile);
     }
 
     std::cout << "has cross tile issue: " << hasCrossTileIssue << ": ";
 
     // first use high channels, so that channels can be preserved for fifos with cross tile buffers that need 0-3
-    for (int i = maxChannelNum - 1; i >= 0; i--)
-      if (int usageCnt = channelsPerTile[{tileOp.getResult(), dir, i}];
-          usageCnt == 0) {
-        channelsPerTile[{tileOp.getResult(), dir, i}] = 1;
+    // for (int i = maxChannelNum - 1; i >= 0; i--)
+    //   if (int usageCnt = channelsPerTile[{tileOp.getResult(), dir, i}];
+    //       usageCnt == 0) {
+    //     channelsPerTile[{tileOp.getResult(), dir, i}] = 1;
 
-        std::cout << "Allocated DMA channel " << i << " for tile (" << tileOp.getCol() << "," << tileOp.getRow() << ") in direction " << (dir == DMAChannelDir::MM2S ? "MM2S" : "S2MM") << "\n";
+    //     std::cout << "Allocated DMA channel " << i << " for tile (" << tileOp.getCol() << "," << tileOp.getRow() << ") in direction " << (dir == DMAChannelDir::MM2S ? "MM2S" : "S2MM") << "\n";
 
-        return i;
+    //     return i;
+    //   }
+
+
+      for (int i = 0; i < maxChannelNum; i++){
+        if (int usageCnt = channelsPerTile[{tileOp.getResult(), dir, i}];
+            usageCnt == 0) {
+          channelsPerTile[{tileOp.getResult(), dir, i}] = 1;
+          return i;
+        }
       }
+
 
     std::cout << "Failed to allocate DMA channel for tile (" << tileOp.getCol() << "," << tileOp.getRow() << ") in direction " << (dir == DMAChannelDir::MM2S ? "MM2S" : "S2MM") << "\n";
     return -1;
@@ -584,17 +597,22 @@ struct AIEObjectFifoStatefulTransformPass
     std::cout << "             No existing tile found at (" << col << ", " << row
               << "). Creating a new one." << std::endl;
     OpBuilder::InsertionGuard g(builder);
-    
+
+    auto savedInsertionPoint = builder.saveInsertionPoint();
+
     // Find the last buffer operation after the host tile
     Operation *insertAfter = hostTile.getOperation();
     Operation *nextOp = insertAfter->getNextNode();
-    while (isa<BufferOp>(nextOp)) {
+    while (nextOp && isa<BufferOp>(nextOp)) {
         insertAfter = nextOp;
         nextOp = nextOp->getNextNode();
     }
     
     builder.setInsertionPointAfter(insertAfter);
     auto newTile = builder.create<TileOp>(builder.getUnknownLoc(), col, row);
+
+    builder.restoreInsertionPoint(savedInsertionPoint);
+
     return newTile;
   }
 
@@ -673,12 +691,12 @@ struct AIEObjectFifoStatefulTransformPass
     }
 
     // Reset opbuilder location to after the last tile declaration
-    // Operation *t = nullptr;
+    Operation *t = nullptr;
     auto dev = op->getParentOfType<DeviceOp>();
-    // for (auto tile_op : dev.getBody()->getOps<TileOp>()) {
-    //   t = tile_op.getOperation();
-    // }
-    // builder.setInsertionPointAfter(t);
+    for (auto tile_op : dev.getBody()->getOps<TileOp>()) {
+      t = tile_op.getOperation();
+    }
+    builder.setInsertionPointAfter(t);
     for (int i = 0; i < numElem; i++) {
       mlir::ElementsAttr initValues = nullptr;
       if (!creation_tile.isShimTile()) {
@@ -777,7 +795,7 @@ struct AIEObjectFifoStatefulTransformPass
           }
 
         }
-        builder.setInsertionPointAfter(current_buf_allocation_tile.getOperation());
+        // builder.setInsertionPointAfter(current_buf_allocation_tile.getOperation());
         auto buff = builder.create<BufferOp>(
             builder.getUnknownLoc(), elemType, current_buf_allocation_tile,
             builder.getStringAttr(op.name().str() + "_buff_" +
@@ -1998,7 +2016,52 @@ struct AIEObjectFifoStatefulTransformPass
     // Analyze cross-tile buffer allocations and print results
     auto crossTileInfos = analyzeCrossTileFIFOBuffers();
     printCrossTileMap(crossTileInfos);
-    
+
+    // assign DMA channels for FIFOs
+    // assign the channel index for fifos that has cross-tile issues first
+    // use dmaAnalysis.getDMAChannelIndex() to assign index (which internally loop 
+    // over all of available channels and assign from 0 to maximum)
+    std::map<ObjectFifoCreateOp, int> fifo_dma_channel_index;
+    for (auto &[producer, consumers] : splitFifos) {
+      // If the producer tile has cross-tile issues, assign a channel index
+      if (crossTileInfos[producer]) {
+        bool hasCrossTileIssue = crossTileInfos[producer];
+        int channelIndex = dmaAnalysis.getDMAChannelIndex(
+            producer.getProducerTileOp(), DMAChannelDir::MM2S, hasCrossTileIssue);
+        fifo_dma_channel_index[producer] = channelIndex;
+      }
+      for (auto consumer : consumers) {
+        if (crossTileInfos[consumer]) {
+            // If the consumer tile has cross-tile issues, assign a channel index
+            // for the consumer tile DMA
+          bool hasCrossTileIssue = crossTileInfos[consumer];
+          int channelIndex = dmaAnalysis.getDMAChannelIndex(
+              consumer.getProducerTileOp(), DMAChannelDir::S2MM, hasCrossTileIssue);
+          fifo_dma_channel_index[consumer] = channelIndex;
+        }
+      }
+    }
+    // assign the channel index for fifos that does not have cross-tile issues
+    for (auto &[producer, consumers] : splitFifos) {
+      // If the producer tile has cross-tile issues, assign a channel index
+      if (crossTileInfos[producer] == false) {
+        bool hasCrossTileIssue = crossTileInfos[producer];
+        int channelIndex = dmaAnalysis.getDMAChannelIndex(
+            producer.getProducerTileOp(), DMAChannelDir::MM2S, hasCrossTileIssue);
+        fifo_dma_channel_index[producer] = channelIndex;
+      }
+      for (auto consumer : consumers) {
+        if (crossTileInfos[consumer] == false) {
+            // If the consumer tile has cross-tile issues, assign a channel index
+            // for the consumer tile DMA
+          bool hasCrossTileIssue = crossTileInfos[consumer];
+          int channelIndex = dmaAnalysis.getDMAChannelIndex(
+              consumer.getProducerTileOp(), DMAChannelDir::S2MM, hasCrossTileIssue);
+          fifo_dma_channel_index[consumer] = channelIndex;
+        }
+      }
+    }
+
 
     //===------------------------------------------------------------------===//
     // Create flows and tile DMAs
@@ -2006,11 +2069,7 @@ struct AIEObjectFifoStatefulTransformPass
     // Only the objectFifos we split above require DMA communication; the others
     // rely on shared memory and share the same buffers.
     for (auto &[producer, consumers] : splitFifos) {
-      // create producer tile DMA
-      bool hasCrossTileIssue = crossTileInfos[producer];
-
-      int producerChanIndex = dmaAnalysis.getDMAChannelIndex(
-          producer.getProducerTileOp(), DMAChannelDir::MM2S, hasCrossTileIssue);
+      int producerChanIndex = fifo_dma_channel_index[producer];
       if (producerChanIndex == -1)
         producer.getProducerTileOp().emitOpError(
             "number of output DMA channel exceeded!");
@@ -2028,12 +2087,7 @@ struct AIEObjectFifoStatefulTransformPass
             producerChan.channel, producer.getPlio());
 
       for (auto consumer : consumers) {
-
-        bool hasCrossTileIssue = crossTileInfos[consumer];
-
-        // create consumer tile DMA
-        int consumerChanIndex = dmaAnalysis.getDMAChannelIndex(
-            consumer.getProducerTileOp(), DMAChannelDir::S2MM, hasCrossTileIssue);
+        int consumerChanIndex = fifo_dma_channel_index[consumer];
         if (consumerChanIndex == -1)
           consumer.getProducerTileOp().emitOpError(
               "number of input DMA channel exceeded!");
