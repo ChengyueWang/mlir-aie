@@ -1,0 +1,92 @@
+rm -rf _build
+mkdir -p _build
+cd _build &&  cmake -E env CXXFLAGS="-std=c++23 -ggdb" cmake `echo /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport` -D CMAKE_C_COMPILER=gcc-13 -D CMAKE_CXX_COMPILER=g++-13 -DTARGET_NAME=ext_to_core_L2 
+-- The C compiler identification is GNU 13.1.0
+-- The CXX compiler identification is GNU 13.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-13 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-13 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (1.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build
+cd _build &&  cmake --build . --config Release
+gmake[1]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build'
+gmake[2]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build'
+gmake[3]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build'
+gmake[3]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build'
+gmake[3]: Entering directory '/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build'
+[ 33%] Building CXX object CMakeFiles/ext_to_core_L2.dir/scratch/chengyue/mlir-aie/runtime_lib/test_lib/test_utils.cpp.o
+[ 66%] Building CXX object CMakeFiles/ext_to_core_L2.dir/test.cpp.o
+[100%] Linking CXX executable ext_to_core_L2
+gmake[3]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build'
+[100%] Built target ext_to_core_L2
+gmake[2]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build'
+gmake[1]: Leaving directory '/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/_build'
+cp _build/ext_to_core_L2 ext_to_core_L2.exe 
+mkdir -p build
+python3 /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/ext_to_core_L2_placed.py npu > build/aie.mlir
+mkdir -p build
+cd build && aiecc.py --aie-generate-xclbin --no-compile-host --xclbin-name=final.xclbin \
+			--no-xchesscc --no-xbridge \
+			--aie-generate-npu-insts --npu-insts-name=insts.bin --verbose ../build/aie.mlir
+Found xchesscc at /proj/xbuilds/2024.2_INT_1113_1001/installs/all_platforms/Vitis/2024.2/aietools
+Compiling ../build/aie.mlir
+created temporary directory /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj
+Running: builtin.module(lower-affine,aie-canonicalize-device,aie.device(aie-assign-lock-ids,aie-register-objectFifos,aie-objectFifo-stateful-transform{ dynamic-objFifos=0 },aie-assign-bd-ids,aie-lower-cascade-flows,aie-lower-broadcast-packet,aie-lower-multicast,aie-assign-tile-controller-ids,aie-generate-column-control-overlay{ route-shim-to-tile-ctrl=0 },aie-assign-buffer-addresses),convert-scf-to-cf)
+aie-translate --aie-generate-target-arch /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_with_addresses.mlir
+Running: builtin.module(aie.device(aie-materialize-bd-chains,aie-substitute-shim-dma-allocations,aie-assign-runtime-sequence-bd-ids,aie-dma-tasks-to-npu,aie-dma-to-npu,aie-lower-set-lock))
+aie-opt --pass-pipeline=builtin.module(aie.device(aie-localize-locks,aie-normalize-address-spaces,aie-transform-bfp-types),aie-standard-lowering,aiex-standard-lowering,canonicalize,cse,convert-vector-to-llvm,expand-strided-metadata,lower-affine,convert-math-to-llvm,convert-index-to-llvm,arith-expand,convert-arith-to-llvm,finalize-memref-to-llvm,convert-func-to-llvm{ use-bare-ptr-memref-call-conv=1 },convert-cf-to-llvm,canonicalize,cse) /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_with_addresses.mlir -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_opt_with_addresses.mlir
+Done in 0.101 sec: aie-opt --pass-pipeline=builtin.module(aie.device(aie-localize-locks,aie-normalize-address-spaces,aie-transform-bfp-types),aie-standard-lowering,aiex-standard-lowering,canonicalize,cse,convert-vector-to-llvm,expand-strided-metadata,lower-affine,convert-math-to-llvm,convert-index-to-llvm,arith-expand,convert-arith-to-llvm,finalize-memref-to-llvm,convert-func-to-llvm{ use-bare-ptr-memref-call-conv=1 },convert-cf-to-llvm,canonicalize,cse) /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_with_addresses.mlir -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_opt_with_addresses.mlir
+aie-translate --mlir-to-llvmir /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_opt_with_addresses.mlir -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.ll
+Done in 0.018 sec: aie-translate --mlir-to-llvmir /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_opt_with_addresses.mlir -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.ll
+/scratch/chengyue/mlir-aie/ironenv/lib/python3.10/site-packages/llvm-aie/bin/opt --passes=default<O2> -inline-threshold=10 -S /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.llpeanohack.ll -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.opt.ll
+Done in 0.073 sec: /scratch/chengyue/mlir-aie/ironenv/lib/python3.10/site-packages/llvm-aie/bin/opt --passes=default<O2> -inline-threshold=10 -S /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.llpeanohack.ll -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.opt.ll
+/scratch/chengyue/mlir-aie/ironenv/lib/python3.10/site-packages/llvm-aie/bin/llc /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.opt.ll -O2 --march=aie2 --function-sections --filetype=obj -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.o
+Done in 0.114 sec: /scratch/chengyue/mlir-aie/ironenv/lib/python3.10/site-packages/llvm-aie/bin/llc /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.opt.ll -O2 --march=aie2 --function-sections --filetype=obj -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.o
+aie-opt --aie-create-pathfinder-flows /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_with_addresses.mlir -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_physical.mlir
+Done in 6.054 sec: aie-opt --aie-create-pathfinder-flows /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_with_addresses.mlir -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_physical.mlir
+aie-translate /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_with_addresses.mlir --aie-generate-ldscript --tilecol=0 --tilerow=2 -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/core_0_2.ld.script
+Done in 0.040 sec: aie-translate /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input_with_addresses.mlir --aie-generate-ldscript --tilecol=0 --tilerow=2 -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/core_0_2.ld.script
+/scratch/chengyue/mlir-aie/ironenv/lib/python3.10/site-packages/llvm-aie/bin/clang -O2 --target=aie2-none-elf /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.o -Wl,--gc-sections -Wl,--orphan-handling=error -Wl,-T,/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/core_0_2.ld.script -o ./core_0_2.elf
+Done in 0.106 sec: /scratch/chengyue/mlir-aie/ironenv/lib/python3.10/site-packages/llvm-aie/bin/clang -O2 --target=aie2-none-elf /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/input.o -Wl,--gc-sections -Wl,--orphan-handling=error -Wl,-T,/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/core_0_2.ld.script -o ./core_0_2.elf
+bootgen -arch versal -image /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/design.bif -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/design.pdi -w
+
+
+****** Bootgen v2024.1
+  **** Build date : Jul 15 2025-10:41:01
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+
+[INFO]   : Bootimage generated successfully
+
+
+Done in 0.006 sec: bootgen -arch versal -image /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/design.bif -o /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/design.pdi -w
+xclbinutil --add-replace-section MEM_TOPOLOGY:JSON:/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/mem_topology.json --add-kernel /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/kernels.json --add-replace-section AIE_PARTITION:JSON:/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/aie_partition.json --force --quiet --output final.xclbin
+Info: Embedded Metadata section is missing project.platform.device.core element, adding it.
+
+Done in 0.063 sec: xclbinutil --add-replace-section MEM_TOPOLOGY:JSON:/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/mem_topology.json --add-kernel /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/kernels.json --add-replace-section AIE_PARTITION:JSON:/scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/aie_partition.json --force --quiet --output final.xclbin
+
+Generating: /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/aie_cdo_elfs.bin
+Generating: /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/aie_cdo_init.bin
+Generating: /scratch/chengyue/mlir-aie/programming_examples/basic/03_cy_external_mem_to_core_L2_1_largeport/build/aie.mlir.prj/aie_cdo_enable.bin
+./ext_to_core_L2.exe -x build/final.xclbin -i build/insts.bin -k MLIR_AIE
+Name: MLIR_AIE
+Correct output 2 == 2
+Correct output 2 == 2
+Correct output 2 == 2
+Correct output 2 == 2
+Correct output 2 == 2
+Correct output 2 == 2
+Correct output 2 == 2
+Correct output 2 == 2
+
+PASS!
+

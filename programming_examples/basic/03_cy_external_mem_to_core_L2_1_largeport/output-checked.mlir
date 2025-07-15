@@ -12,22 +12,22 @@ module {
     %mem_tile_0_1 = aie.tile(0, 1)
     %mem_tile_1_1 = aie.tile(1, 1)
     %tile_0_2 = aie.tile(0, 2)
-    %out1_cons_buff_0 = aie.buffer(%mem_tile_0_1) {sym_name = "out1_cons_buff_0"} : memref<8xi32> 
-    %out1_cons_buff_1 = aie.buffer(%mem_tile_0_1) {sym_name = "out1_cons_buff_1"} : memref<8xi32> 
+    %out1_cons_buff_0 = aie.buffer(%mem_tile_0_1) {address = 384000 : i32, sym_name = "out1_cons_buff_0"} : memref<8xi32> 
+    %out1_cons_buff_1 = aie.buffer(%mem_tile_0_1) {address = 384032 : i32, sym_name = "out1_cons_buff_1"} : memref<8xi32> 
     %out1_cons_prod_lock_0 = aie.lock(%mem_tile_0_1, 2) {init = 2 : i32, sym_name = "out1_cons_prod_lock_0"}
     %out1_cons_cons_lock_0 = aie.lock(%mem_tile_0_1, 3) {init = 0 : i32, sym_name = "out1_cons_cons_lock_0"}
-    %out1_buff_0 = aie.buffer(%tile_0_2) {sym_name = "out1_buff_0"} : memref<8xi32> 
-    %out1_buff_1 = aie.buffer(%tile_0_2) {sym_name = "out1_buff_1"} : memref<8xi32> 
+    %out1_buff_0 = aie.buffer(%tile_0_2) {address = 1024 : i32, sym_name = "out1_buff_0"} : memref<8xi32> 
+    %out1_buff_1 = aie.buffer(%tile_0_2) {address = 1056 : i32, sym_name = "out1_buff_1"} : memref<8xi32> 
     %out1_prod_lock_0 = aie.lock(%tile_0_2, 2) {init = 2 : i32, sym_name = "out1_prod_lock_0"}
     %out1_cons_lock_0 = aie.lock(%tile_0_2, 3) {init = 0 : i32, sym_name = "out1_cons_lock_0"}
     %out0_cons_prod_lock_0 = aie.lock(%shim_noc_tile_0_0, 2) {init = 1 : i32, sym_name = "out0_cons_prod_lock_0"}
     %out0_cons_cons_lock_0 = aie.lock(%shim_noc_tile_0_0, 3) {init = 0 : i32, sym_name = "out0_cons_cons_lock_0"}
-    %in1_cons_buff_0 = aie.buffer(%tile_0_2) {sym_name = "in1_cons_buff_0"} : memref<8xi32> 
-    %in1_cons_buff_1 = aie.buffer(%tile_0_2) {sym_name = "in1_cons_buff_1"} : memref<8xi32> 
+    %in1_cons_buff_0 = aie.buffer(%tile_0_2) {address = 1088 : i32, sym_name = "in1_cons_buff_0"} : memref<8xi32> 
+    %in1_cons_buff_1 = aie.buffer(%tile_0_2) {address = 1120 : i32, sym_name = "in1_cons_buff_1"} : memref<8xi32> 
     %in1_cons_prod_lock_0 = aie.lock(%tile_0_2, 0) {init = 2 : i32, sym_name = "in1_cons_prod_lock_0"}
     %in1_cons_cons_lock_0 = aie.lock(%tile_0_2, 1) {init = 0 : i32, sym_name = "in1_cons_cons_lock_0"}
-    %in0_cons_buff_0 = aie.buffer(%mem_tile_0_1) {sym_name = "in0_cons_buff_0"} : memref<96000xi32> 
-    %in0_cons_buff_1 = aie.buffer(%mem_tile_1_1) {sym_name = "in0_cons_buff_1"} : memref<96000xi32> 
+    %in0_cons_buff_0 = aie.buffer(%mem_tile_0_1) {address = 0 : i32, sym_name = "in0_cons_buff_0"} : memref<96000xi32> 
+    %in0_cons_buff_1 = aie.buffer(%mem_tile_1_1) {address = 0 : i32, sym_name = "in0_cons_buff_1"} : memref<96000xi32> 
     %in0_cons_prod_lock_0 = aie.lock(%mem_tile_0_1, 0) {init = 2 : i32, sym_name = "in0_cons_prod_lock_0"}
     %in0_cons_cons_lock_0 = aie.lock(%mem_tile_0_1, 1) {init = 0 : i32, sym_name = "in0_cons_cons_lock_0"}
     %in0_prod_lock_0 = aie.lock(%shim_noc_tile_0_0, 0) {init = 1 : i32, sym_name = "in0_prod_lock_0"}
