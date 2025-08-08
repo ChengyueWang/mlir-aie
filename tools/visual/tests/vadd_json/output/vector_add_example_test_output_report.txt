@@ -1,0 +1,104 @@
+AIE Design Report: vector_add_design
+==================================================
+
+Tile: shim_noc_tile_0_0 (0, 0) - SHIM
+----------------------------------------
+LOCK [name|id|init]
+  input_prod_lock | 0 | 1
+  input_cons_lock | 1 | 0
+  output_prod_lock | 2 | 0
+  output_cons_lock | 3 | 1
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:0→(0, 1) DMA:0
+  stream
+  flow: local DMA:1→(0, 1) DMA:1
+  packet_flow
+  flow: local Ctrl:0→(0, 0) South:0
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:2←(0, 1) DMA:5
+  packet_flow
+  flow: local South:0←(0, 0) Ctrl:0
+
+
+Tile: mem_tile_0_1 (0, 1) - MEM
+----------------------------------------
+L2 Memory: 512KB
+MEMORY [name|size|dtype|addr|bank]
+  input_buffer_a | 4096 | memref<1024xi32> | 0 | 0
+  input_buffer_b | 4096 | memref<1024xi32> | 65536 | 1
+  output_buffer | 4096 | memref<1024xi32> | 131072 | 0
+
+LOCK [name|id|init]
+  mem_input_prod_lock | 0 | 2
+  mem_input_cons_lock | 1 | 0
+  mem_output_prod_lock | 2 | 0
+  mem_output_cons_lock | 3 | 2
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:2→(0, 2) DMA:0
+  stream
+  flow: local DMA:3→(0, 2) DMA:1
+  stream
+  flow: local DMA:5→(0, 0) DMA:2
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:0←(0, 0) DMA:0
+  stream
+  flow: local DMA:1←(0, 0) DMA:1
+  stream
+  flow: local DMA:4←(0, 2) DMA:0
+
+
+Tile: compute_tile_0_2 (0, 2) - COMPUTE
+----------------------------------------
+KERNEL [name]
+  vector_add_kernel
+
+MEMORY [name|size|dtype|addr|bank]
+  local_input_a | 1024 | memref<1024xi32> | 0 | 1
+  local_input_b | 1024 | memref<1024xi32> | 1024 | 2
+  local_output | 1024 | memref<1024xi32> | 2048 | 3
+  kernel_stack | 1024 | memref<1024xi32> | 3072 | 4
+
+LOCK [name|id|init]
+  ct_input_a_lock | 0 | 1
+  ct_input_b_lock | 1 | 1
+  ct_output_lock | 2 | 0
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:0→(0, 1) DMA:4
+  cascade
+  flow: local Out→(1, 2) In
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:0←(0, 1) DMA:2
+  stream
+  flow: local DMA:1←(0, 1) DMA:3
+
+
+Tile: compute_tile_1_2 (1, 2) - COMPUTE
+----------------------------------------
+KERNEL [name]
+  vector_scale_kernel
+
+MEMORY [name|size|dtype|addr|bank]
+  buffer1 | 1024 | memref<1024xi32> | 0 | 2
+  scaled_output | 1024 | memref<1024xi32> | 1024 | 4
+
+LOCK [name|id|init]
+  ct2_input_lock | 0 | 1
+  ct2_output_lock | 1 | 0
+
+FLOW IN [type|direction]
+  cascade
+  flow: local In←(0, 2) Out
+
+

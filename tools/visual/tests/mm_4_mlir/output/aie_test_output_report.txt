@@ -1,0 +1,132 @@
+AIE Design Report: aie_design
+==================================================
+
+Tile: t60 (6, 0) - SHIM
+----------------------------------------
+LOCK [name|id|init]
+  LHS_tile0_lock | 0 | 0
+  LHS_tile1_lock | 1 | 0
+  RHS_tile0_lock | 2 | 0
+  RHS_tile1_lock | 3 | 0
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:0→(6, 3) DMA:0
+  stream
+  flow: local DMA:0→(7, 3) DMA:0
+  stream
+  flow: local DMA:1→(6, 4) DMA:0
+  stream
+  flow: local DMA:1→(7, 4) DMA:0
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:0←(6, 4) DMA:0
+  stream
+  flow: local DMA:1←(7, 4) DMA:0
+
+
+Tile: t63 (6, 3) - COMPUTE
+----------------------------------------
+KERNEL [name]
+  kernel_6_3
+
+MEMORY [name|size|dtype|addr|bank]
+  buf63_0 | 1024 | memref<1024xi32> | 0 | 0
+  buf63_1 | 1024 | memref<1024xi32> | 0 | 0
+  buf63_2 | 1024 | memref<1024xi32> | 0 | 0
+  buf63_3 | 1024 | memref<1024xi32> | 0 | 0
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:0←(6, 0) DMA:0
+  stream
+  flow: local DMA:1←(7, 0) DMA:0
+
+
+Tile: t64 (6, 4) - COMPUTE
+----------------------------------------
+KERNEL [name]
+  kernel_6_4
+
+MEMORY [name|size|dtype|addr|bank]
+  buf64_0 | 1024 | memref<1024xi32> | 0 | 0
+  buf64_1 | 1024 | memref<1024xi32> | 0 | 0
+  buf64_2 | 1024 | memref<1024xi32> | 0 | 0
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:0→(6, 0) DMA:0
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:0←(6, 0) DMA:1
+  stream
+  flow: local DMA:1←(7, 0) DMA:1
+
+
+Tile: t70 (7, 0) - SHIM
+----------------------------------------
+LOCK [name|id|init]
+  RHS_tile2_lock | 0 | 0
+  RHS_tile3_lock | 1 | 0
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:0→(6, 3) DMA:1
+  stream
+  flow: local DMA:1→(6, 4) DMA:1
+
+
+Tile: t73 (7, 3) - COMPUTE
+----------------------------------------
+KERNEL [name]
+  kernel_7_3
+
+MEMORY [name|size|dtype|addr|bank]
+  buf73_0 | 1024 | memref<1024xi32> | 0 | 0
+  buf73_1 | 1024 | memref<1024xi32> | 0 | 0
+  buf73_2 | 1024 | memref<1024xi32> | 0 | 0
+  buf73_3 | 1024 | memref<1024xi32> | 0 | 0
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:0←(6, 0) DMA:0
+  stream
+  flow: local DMA:1←(10, 0) DMA:0
+
+
+Tile: t74 (7, 4) - COMPUTE
+----------------------------------------
+KERNEL [name]
+  kernel_7_4
+
+MEMORY [name|size|dtype|addr|bank]
+  buf74_0 | 1024 | memref<1024xi32> | 0 | 0
+  buf74_1 | 1024 | memref<1024xi32> | 0 | 0
+  buf74_2 | 1024 | memref<1024xi32> | 0 | 0
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:0→(6, 0) DMA:1
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:0←(6, 0) DMA:1
+  stream
+  flow: local DMA:1←(10, 0) DMA:1
+
+
+Tile: t100 (10, 0) - SHIM
+----------------------------------------
+LOCK [name|id|init]
+  Out_tile0_lock | 0 | 0
+  Out_tile1_lock | 1 | 0
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:0→(7, 3) DMA:1
+  stream
+  flow: local DMA:1→(7, 4) DMA:1
+
+

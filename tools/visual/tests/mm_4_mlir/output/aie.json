@@ -1,0 +1,379 @@
+{
+  "application": "aie_design",
+  "device": "npu2",
+  "tiles": {
+    "(6, 0)": {
+      "name": "t60",
+      "type": "SHIM",
+      "location": [
+        6,
+        0
+      ],
+      "controller_id": {
+        "pkt_id": 0
+      },
+      "locks": [
+        {
+          "name": "LHS_tile0_lock",
+          "id": 0,
+          "init": 0
+        },
+        {
+          "name": "LHS_tile1_lock",
+          "id": 1,
+          "init": 0
+        },
+        {
+          "name": "RHS_tile0_lock",
+          "id": 2,
+          "init": 0
+        },
+        {
+          "name": "RHS_tile1_lock",
+          "id": 3,
+          "init": 0
+        }
+      ]
+    },
+    "(6, 3)": {
+      "name": "t63",
+      "type": "COMPUTE",
+      "location": [
+        6,
+        3
+      ],
+      "controller_id": {
+        "pkt_id": 0
+      },
+      "kernel": {
+        "name": "kernel_6_3",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "buf63_0",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf63_1",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf63_2",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf63_3",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": []
+    },
+    "(6, 4)": {
+      "name": "t64",
+      "type": "COMPUTE",
+      "location": [
+        6,
+        4
+      ],
+      "controller_id": {
+        "pkt_id": 0
+      },
+      "kernel": {
+        "name": "kernel_6_4",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "buf64_0",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf64_1",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf64_2",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": []
+    },
+    "(7, 0)": {
+      "name": "t70",
+      "type": "SHIM",
+      "location": [
+        7,
+        0
+      ],
+      "controller_id": {
+        "pkt_id": 0
+      },
+      "locks": [
+        {
+          "name": "RHS_tile2_lock",
+          "id": 0,
+          "init": 0
+        },
+        {
+          "name": "RHS_tile3_lock",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(7, 3)": {
+      "name": "t73",
+      "type": "COMPUTE",
+      "location": [
+        7,
+        3
+      ],
+      "controller_id": {
+        "pkt_id": 0
+      },
+      "kernel": {
+        "name": "kernel_7_3",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "buf73_0",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf73_1",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf73_2",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf73_3",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": []
+    },
+    "(7, 4)": {
+      "name": "t74",
+      "type": "COMPUTE",
+      "location": [
+        7,
+        4
+      ],
+      "controller_id": {
+        "pkt_id": 0
+      },
+      "kernel": {
+        "name": "kernel_7_4",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "buf74_0",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf74_1",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "buf74_2",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": []
+    },
+    "(10, 0)": {
+      "name": "t100",
+      "type": "SHIM",
+      "location": [
+        10,
+        0
+      ],
+      "controller_id": {
+        "pkt_id": 0
+      },
+      "locks": [
+        {
+          "name": "Out_tile0_lock",
+          "id": 0,
+          "init": 0
+        },
+        {
+          "name": "Out_tile1_lock",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    }
+  },
+  "connections": {
+    "flow_0": {
+      "type": "stream",
+      "source": {
+        "tile": "(6, 0)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(6, 3)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_1": {
+      "type": "stream",
+      "source": {
+        "tile": "(6, 0)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(7, 3)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_2": {
+      "type": "stream",
+      "source": {
+        "tile": "(6, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(6, 4)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_3": {
+      "type": "stream",
+      "source": {
+        "tile": "(6, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(7, 4)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_4": {
+      "type": "stream",
+      "source": {
+        "tile": "(7, 0)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(6, 3)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_5": {
+      "type": "stream",
+      "source": {
+        "tile": "(7, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(6, 4)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_6": {
+      "type": "stream",
+      "source": {
+        "tile": "(10, 0)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(7, 3)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_7": {
+      "type": "stream",
+      "source": {
+        "tile": "(10, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(7, 4)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_8": {
+      "type": "stream",
+      "source": {
+        "tile": "(6, 4)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(6, 0)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_9": {
+      "type": "stream",
+      "source": {
+        "tile": "(7, 4)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(6, 0)",
+        "port": "DMA:1"
+      }
+    }
+  }
+}

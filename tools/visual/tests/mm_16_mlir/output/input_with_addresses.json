@@ -1,0 +1,2835 @@
+{
+  "application": "aie_design",
+  "device": "npu2",
+  "tiles": {
+    "(0, 0)": {
+      "name": "shim_noc_tile_0_0",
+      "type": "SHIM",
+      "location": [
+        0,
+        0
+      ],
+      "controller_id": {
+        "pkt_id": 15
+      },
+      "locks": [
+        {
+          "name": "C_L2L3_0_cons_prod_lock_0",
+          "id": 4,
+          "init": 1
+        },
+        {
+          "name": "C_L2L3_0_cons_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L3L2_0_prod_lock_0",
+          "id": 2,
+          "init": 1
+        },
+        {
+          "name": "B_L3L2_0_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L3L2_0_prod_lock_0",
+          "id": 0,
+          "init": 1
+        },
+        {
+          "name": "A_L3L2_0_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(1, 0)": {
+      "name": "shim_noc_tile_1_0",
+      "type": "SHIM",
+      "location": [
+        1,
+        0
+      ],
+      "controller_id": {
+        "pkt_id": 15
+      },
+      "locks": [
+        {
+          "name": "C_L2L3_1_cons_prod_lock_0",
+          "id": 4,
+          "init": 1
+        },
+        {
+          "name": "C_L2L3_1_cons_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L3L2_1_prod_lock_0",
+          "id": 2,
+          "init": 1
+        },
+        {
+          "name": "B_L3L2_1_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L3L2_1_prod_lock_0",
+          "id": 0,
+          "init": 1
+        },
+        {
+          "name": "A_L3L2_1_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(2, 0)": {
+      "name": "shim_noc_tile_2_0",
+      "type": "SHIM",
+      "location": [
+        2,
+        0
+      ],
+      "controller_id": {
+        "pkt_id": 15
+      },
+      "locks": [
+        {
+          "name": "C_L2L3_2_cons_prod_lock_0",
+          "id": 4,
+          "init": 1
+        },
+        {
+          "name": "C_L2L3_2_cons_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L3L2_2_prod_lock_0",
+          "id": 2,
+          "init": 1
+        },
+        {
+          "name": "B_L3L2_2_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L3L2_2_prod_lock_0",
+          "id": 0,
+          "init": 1
+        },
+        {
+          "name": "A_L3L2_2_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(3, 0)": {
+      "name": "shim_noc_tile_3_0",
+      "type": "SHIM",
+      "location": [
+        3,
+        0
+      ],
+      "controller_id": {
+        "pkt_id": 15
+      },
+      "locks": [
+        {
+          "name": "C_L2L3_3_cons_prod_lock_0",
+          "id": 4,
+          "init": 1
+        },
+        {
+          "name": "C_L2L3_3_cons_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L3L2_3_prod_lock_0",
+          "id": 2,
+          "init": 1
+        },
+        {
+          "name": "B_L3L2_3_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L3L2_3_prod_lock_0",
+          "id": 0,
+          "init": 1
+        },
+        {
+          "name": "A_L3L2_3_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(0, 1)": {
+      "name": "mem_tile_0_1",
+      "type": "MEM",
+      "location": [
+        0,
+        1
+      ],
+      "controller_id": {
+        "pkt_id": 26
+      },
+      "L2_memory": {
+        "total_size": 262144,
+        "buffers": [
+          {
+            "name": "C_L2L3_0_buff_0",
+            "size": 4096,
+            "type": "memref<4096xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L2L3_0_buff_1",
+            "size": 4096,
+            "type": "memref<4096xi32>",
+            "address": 16384,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L3L2_0_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 32768,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L3L2_0_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 34816,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L3L2_0_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 36864,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L3L2_0_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 38912,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L2L3_0_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_0_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_0_prod_lock_1",
+          "id": 6,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_0_cons_lock_1",
+          "id": 7,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_0_prod_lock_2",
+          "id": 8,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_0_cons_lock_2",
+          "id": 9,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_0_prod_lock_3",
+          "id": 10,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_0_cons_lock_3",
+          "id": 11,
+          "init": 0
+        },
+        {
+          "name": "B_L3L2_0_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L3L2_0_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L3L2_0_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L3L2_0_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(1, 1)": {
+      "name": "mem_tile_1_1",
+      "type": "MEM",
+      "location": [
+        1,
+        1
+      ],
+      "controller_id": {
+        "pkt_id": 26
+      },
+      "L2_memory": {
+        "total_size": 262144,
+        "buffers": [
+          {
+            "name": "C_L2L3_1_buff_0",
+            "size": 4096,
+            "type": "memref<4096xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L2L3_1_buff_1",
+            "size": 4096,
+            "type": "memref<4096xi32>",
+            "address": 16384,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L3L2_1_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 32768,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L3L2_1_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 34816,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L3L2_1_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 36864,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L3L2_1_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 38912,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L2L3_1_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_1_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_1_prod_lock_1",
+          "id": 6,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_1_cons_lock_1",
+          "id": 7,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_1_prod_lock_2",
+          "id": 8,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_1_cons_lock_2",
+          "id": 9,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_1_prod_lock_3",
+          "id": 10,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_1_cons_lock_3",
+          "id": 11,
+          "init": 0
+        },
+        {
+          "name": "B_L3L2_1_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L3L2_1_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L3L2_1_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L3L2_1_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(2, 1)": {
+      "name": "mem_tile_2_1",
+      "type": "MEM",
+      "location": [
+        2,
+        1
+      ],
+      "controller_id": {
+        "pkt_id": 26
+      },
+      "L2_memory": {
+        "total_size": 262144,
+        "buffers": [
+          {
+            "name": "C_L2L3_2_buff_0",
+            "size": 4096,
+            "type": "memref<4096xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L2L3_2_buff_1",
+            "size": 4096,
+            "type": "memref<4096xi32>",
+            "address": 16384,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L3L2_2_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 32768,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L3L2_2_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 34816,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L3L2_2_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 36864,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L3L2_2_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 38912,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L2L3_2_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_2_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_2_prod_lock_1",
+          "id": 6,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_2_cons_lock_1",
+          "id": 7,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_2_prod_lock_2",
+          "id": 8,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_2_cons_lock_2",
+          "id": 9,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_2_prod_lock_3",
+          "id": 10,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_2_cons_lock_3",
+          "id": 11,
+          "init": 0
+        },
+        {
+          "name": "B_L3L2_2_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L3L2_2_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L3L2_2_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L3L2_2_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(3, 1)": {
+      "name": "mem_tile_3_1",
+      "type": "MEM",
+      "location": [
+        3,
+        1
+      ],
+      "controller_id": {
+        "pkt_id": 26
+      },
+      "L2_memory": {
+        "total_size": 262144,
+        "buffers": [
+          {
+            "name": "C_L2L3_3_buff_0",
+            "size": 4096,
+            "type": "memref<4096xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L2L3_3_buff_1",
+            "size": 4096,
+            "type": "memref<4096xi32>",
+            "address": 16384,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L3L2_3_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 32768,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L3L2_3_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 34816,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L3L2_3_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 36864,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L3L2_3_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi16>",
+            "address": 38912,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L2L3_3_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_3_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_3_prod_lock_1",
+          "id": 6,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_3_cons_lock_1",
+          "id": 7,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_3_prod_lock_2",
+          "id": 8,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_3_cons_lock_2",
+          "id": 9,
+          "init": 0
+        },
+        {
+          "name": "C_L2L3_3_prod_lock_3",
+          "id": 10,
+          "init": 2
+        },
+        {
+          "name": "C_L2L3_3_cons_lock_3",
+          "id": 11,
+          "init": 0
+        },
+        {
+          "name": "B_L3L2_3_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L3L2_3_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L3L2_3_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L3L2_3_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(0, 2)": {
+      "name": "tile_0_2",
+      "type": "COMPUTE",
+      "location": [
+        0,
+        2
+      ],
+      "controller_id": {
+        "pkt_id": 27
+      },
+      "kernel": {
+        "name": "kernel_0_2",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_0_0_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_0_0_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_0_0_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_0_0_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_0_0_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_0_0_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_0_0_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_0_0_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_0_0_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_0_0_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_0_0_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_0_0_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(1, 2)": {
+      "name": "tile_1_2",
+      "type": "COMPUTE",
+      "location": [
+        1,
+        2
+      ],
+      "controller_id": {
+        "pkt_id": 27
+      },
+      "kernel": {
+        "name": "kernel_1_2",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_1_0_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_1_0_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_1_0_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_1_0_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_0_1_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_0_1_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_1_0_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_1_0_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_1_0_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_1_0_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_0_1_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_0_1_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(2, 2)": {
+      "name": "tile_2_2",
+      "type": "COMPUTE",
+      "location": [
+        2,
+        2
+      ],
+      "controller_id": {
+        "pkt_id": 27
+      },
+      "kernel": {
+        "name": "kernel_2_2",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_2_0_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_2_0_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_2_0_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_2_0_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_0_2_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_0_2_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_2_0_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_2_0_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_2_0_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_2_0_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_0_2_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_0_2_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(3, 2)": {
+      "name": "tile_3_2",
+      "type": "COMPUTE",
+      "location": [
+        3,
+        2
+      ],
+      "controller_id": {
+        "pkt_id": 27
+      },
+      "kernel": {
+        "name": "kernel_3_2",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_3_0_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_3_0_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_3_0_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_3_0_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_0_3_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_0_3_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_3_0_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_3_0_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_3_0_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_3_0_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_0_3_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_0_3_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(0, 3)": {
+      "name": "tile_0_3",
+      "type": "COMPUTE",
+      "location": [
+        0,
+        3
+      ],
+      "controller_id": {
+        "pkt_id": 29
+      },
+      "kernel": {
+        "name": "kernel_0_3",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_0_1_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_0_1_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_0_1_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_0_1_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_1_0_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_1_0_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_0_1_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_0_1_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_0_1_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_0_1_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_1_0_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_1_0_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(1, 3)": {
+      "name": "tile_1_3",
+      "type": "COMPUTE",
+      "location": [
+        1,
+        3
+      ],
+      "controller_id": {
+        "pkt_id": 29
+      },
+      "kernel": {
+        "name": "kernel_1_3",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_1_1_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_1_1_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_1_1_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_1_1_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_1_1_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_1_1_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_1_1_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_1_1_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_1_1_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_1_1_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_1_1_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_1_1_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(2, 3)": {
+      "name": "tile_2_3",
+      "type": "COMPUTE",
+      "location": [
+        2,
+        3
+      ],
+      "controller_id": {
+        "pkt_id": 29
+      },
+      "kernel": {
+        "name": "kernel_2_3",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_2_1_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_2_1_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_2_1_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_2_1_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_1_2_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_1_2_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_2_1_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_2_1_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_2_1_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_2_1_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_1_2_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_1_2_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(3, 3)": {
+      "name": "tile_3_3",
+      "type": "COMPUTE",
+      "location": [
+        3,
+        3
+      ],
+      "controller_id": {
+        "pkt_id": 29
+      },
+      "kernel": {
+        "name": "kernel_3_3",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_3_1_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_3_1_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_3_1_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_3_1_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_1_3_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_1_3_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_3_1_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_3_1_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_3_1_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_3_1_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_1_3_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_1_3_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(0, 4)": {
+      "name": "tile_0_4",
+      "type": "COMPUTE",
+      "location": [
+        0,
+        4
+      ],
+      "controller_id": {
+        "pkt_id": 30
+      },
+      "kernel": {
+        "name": "kernel_0_4",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_0_2_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_0_2_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_0_2_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_0_2_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_2_0_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_2_0_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_0_2_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_0_2_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_0_2_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_0_2_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_2_0_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_2_0_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(1, 4)": {
+      "name": "tile_1_4",
+      "type": "COMPUTE",
+      "location": [
+        1,
+        4
+      ],
+      "controller_id": {
+        "pkt_id": 30
+      },
+      "kernel": {
+        "name": "kernel_1_4",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_1_2_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_1_2_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_1_2_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_1_2_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_2_1_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_2_1_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_1_2_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_1_2_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_1_2_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_1_2_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_2_1_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_2_1_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(2, 4)": {
+      "name": "tile_2_4",
+      "type": "COMPUTE",
+      "location": [
+        2,
+        4
+      ],
+      "controller_id": {
+        "pkt_id": 30
+      },
+      "kernel": {
+        "name": "kernel_2_4",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_2_2_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_2_2_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_2_2_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_2_2_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_2_2_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_2_2_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_2_2_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_2_2_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_2_2_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_2_2_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_2_2_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_2_2_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(3, 4)": {
+      "name": "tile_3_4",
+      "type": "COMPUTE",
+      "location": [
+        3,
+        4
+      ],
+      "controller_id": {
+        "pkt_id": 30
+      },
+      "kernel": {
+        "name": "kernel_3_4",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_3_2_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_3_2_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_3_2_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_3_2_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_2_3_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_2_3_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_3_2_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_3_2_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_3_2_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_3_2_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_2_3_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_2_3_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(0, 5)": {
+      "name": "tile_0_5",
+      "type": "COMPUTE",
+      "location": [
+        0,
+        5
+      ],
+      "controller_id": {
+        "pkt_id": 31
+      },
+      "kernel": {
+        "name": "kernel_0_5",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_0_3_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_0_3_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_0_3_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_0_3_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_3_0_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_3_0_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_0_3_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_0_3_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_0_3_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_0_3_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_3_0_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_3_0_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(1, 5)": {
+      "name": "tile_1_5",
+      "type": "COMPUTE",
+      "location": [
+        1,
+        5
+      ],
+      "controller_id": {
+        "pkt_id": 31
+      },
+      "kernel": {
+        "name": "kernel_1_5",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_1_3_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_1_3_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_1_3_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_1_3_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_3_1_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_3_1_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_1_3_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_1_3_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_1_3_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_1_3_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_3_1_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_3_1_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(2, 5)": {
+      "name": "tile_2_5",
+      "type": "COMPUTE",
+      "location": [
+        2,
+        5
+      ],
+      "controller_id": {
+        "pkt_id": 31
+      },
+      "kernel": {
+        "name": "kernel_2_5",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_2_3_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_2_3_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_2_3_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_2_3_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_3_2_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_3_2_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_2_3_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_2_3_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_2_3_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_2_3_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_3_2_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_3_2_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(3, 5)": {
+      "name": "tile_3_5",
+      "type": "COMPUTE",
+      "location": [
+        3,
+        5
+      ],
+      "controller_id": {
+        "pkt_id": 31
+      },
+      "kernel": {
+        "name": "kernel_3_5",
+        "function": ""
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "C_L1L2_3_3_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 3328,
+            "mem_bank": 0
+          },
+          {
+            "name": "C_L1L2_3_3_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi32>",
+            "address": 7424,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_3_3_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 11520,
+            "mem_bank": 0
+          },
+          {
+            "name": "B_L2L1_3_3_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 13568,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_3_3_cons_buff_0",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 15616,
+            "mem_bank": 0
+          },
+          {
+            "name": "A_L2L1_3_3_cons_buff_1",
+            "size": 32,
+            "type": "memref<32x32xi16>",
+            "address": 17664,
+            "mem_bank": 0
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "C_L1L2_3_3_prod_lock_0",
+          "id": 4,
+          "init": 2
+        },
+        {
+          "name": "C_L1L2_3_3_cons_lock_0",
+          "id": 5,
+          "init": 0
+        },
+        {
+          "name": "B_L2L1_3_3_cons_prod_lock_0",
+          "id": 2,
+          "init": 2
+        },
+        {
+          "name": "B_L2L1_3_3_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "A_L2L1_3_3_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "A_L2L1_3_3_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    }
+  },
+  "connections": {
+    "flow_0": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 0)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 1)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_1": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 0)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 1)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_2": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 0)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 1)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_3": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 0)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 1)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_4": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 2)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_5": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 2)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_6": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 2)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_7": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 2)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_8": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 3)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_9": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 3)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_10": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 3)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_11": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 3)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_12": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 4)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_13": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 4)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_14": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 4)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_15": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 4)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_16": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 5)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_17": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 5)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_18": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 5)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_19": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 5)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_20": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(0, 1)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_21": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(0, 5)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_22": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(0, 4)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_23": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(0, 3)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_24": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(0, 2)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_25": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(1, 1)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_26": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(1, 5)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_27": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(1, 4)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_28": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(1, 3)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_29": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(1, 2)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_30": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(2, 1)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_31": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(2, 5)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_32": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(2, 4)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_33": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(2, 3)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_34": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(2, 2)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_35": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(3, 1)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_36": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(3, 5)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_37": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(3, 4)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_38": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(3, 3)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_39": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(3, 2)",
+        "port": "DMA:1"
+      }
+    },
+    "flow_40": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 2)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 1)",
+        "port": "DMA:2"
+      }
+    },
+    "flow_41": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 3)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 1)",
+        "port": "DMA:3"
+      }
+    },
+    "flow_42": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 4)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 1)",
+        "port": "DMA:4"
+      }
+    },
+    "flow_43": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 5)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(0, 1)",
+        "port": "DMA:5"
+      }
+    },
+    "flow_44": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:2"
+      },
+      "destination": {
+        "tile": "(0, 0)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_45": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 2)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 1)",
+        "port": "DMA:2"
+      }
+    },
+    "flow_46": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 3)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 1)",
+        "port": "DMA:3"
+      }
+    },
+    "flow_47": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 4)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 1)",
+        "port": "DMA:4"
+      }
+    },
+    "flow_48": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 5)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(1, 1)",
+        "port": "DMA:5"
+      }
+    },
+    "flow_49": {
+      "type": "stream",
+      "source": {
+        "tile": "(1, 1)",
+        "port": "DMA:2"
+      },
+      "destination": {
+        "tile": "(1, 0)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_50": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 2)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 1)",
+        "port": "DMA:2"
+      }
+    },
+    "flow_51": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 3)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 1)",
+        "port": "DMA:3"
+      }
+    },
+    "flow_52": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 4)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 1)",
+        "port": "DMA:4"
+      }
+    },
+    "flow_53": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 5)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(2, 1)",
+        "port": "DMA:5"
+      }
+    },
+    "flow_54": {
+      "type": "stream",
+      "source": {
+        "tile": "(2, 1)",
+        "port": "DMA:2"
+      },
+      "destination": {
+        "tile": "(2, 0)",
+        "port": "DMA:0"
+      }
+    },
+    "flow_55": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 2)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 1)",
+        "port": "DMA:2"
+      }
+    },
+    "flow_56": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 3)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 1)",
+        "port": "DMA:3"
+      }
+    },
+    "flow_57": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 4)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 1)",
+        "port": "DMA:4"
+      }
+    },
+    "flow_58": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 5)",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "(3, 1)",
+        "port": "DMA:5"
+      }
+    },
+    "flow_59": {
+      "type": "stream",
+      "source": {
+        "tile": "(3, 1)",
+        "port": "DMA:2"
+      },
+      "destination": {
+        "tile": "(3, 0)",
+        "port": "DMA:0"
+      }
+    },
+    "packet_flow_15": {
+      "type": "packet",
+      "source": {
+        "tile": "(3, 0)",
+        "port": "TileControl : 0"
+      },
+      "destination": {
+        "tile": "(3, 0)",
+        "port": "South : 0"
+      }
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AIE Tile and Connection JSON Schema",
+  "type": "object",
+  "required": ["application", "device", "tiles", "connections"],
+  "properties": {
+    "application": {"type": "string"},
+    "device": {"type": "string", "enum": ["npu", "npu2", "aie1", "aie2"]},
+    "tiles": {
+      "type": "object",
+      "patternProperties": {
+        "^tile_\\d+_\\d+$": {
+          "type": "object",
+          "required": ["name", "type", "location"],
+          "properties": {
+            "name": {"type": "string"},
+            "type": {"type": "string", "enum": ["SHIM", "MEM", "COMPUTE"]},
+            "location": {
+              "type": "array",
+              "items": {"type": "integer"},
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "controller_id": {
+              "type": "object",
+              "properties": {
+                "pkt_type": {"type": "integer"},
+                "pkt_id": {"type": "integer"}
+              }
+            },
+            "locks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "name", "init"],
+                "properties": {
+                  "id": {"type": "integer"},
+                  "name": {"type": "string"},
+                  "init": {"type": "integer"}
+                }
+              }
+            },
+            "kernel": {
+              "type": "object",
+              "description": "For COMPUTE tiles only",
+              "properties": {
+                "name": {"type": "string"},
+                "file": {"type": "string"},
+                "function": {"type": "string"}
+              }
+            },
+            "L1_memory": {
+              "type": "object",
+              "description": "For COMPUTE tiles only",
+              "properties": {
+                "total_size": {"type": "integer"},
+                "buffers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {"type": "string"},
+                      "address": {"type": "integer"},
+                      "size": {"type": "integer"},
+                      "type": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            },
+            "L2_memory": {
+              "type": "object",
+              "description": "For MEM tiles only",
+              "properties": {
+                "total_size": {"type": "integer"},
+                "buffers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {"type": "string"},
+                      "address": {"type": "integer"},
+                      "size": {"type": "integer"},
+                      "mem_bank": {"type": "integer"},
+                      "type": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "connections": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "required": ["name", "type", "source", "destination"],
+          "properties": {
+            "name": {"type": "string"},
+            "type": {"type": "string", "enum": ["stream", "packet_flow", "cascade_flow"]},
+            "id": {"type": "integer", "description": "For packet flows"},
+            "source": {
+              "type": "object",
+              "required": ["tile", "port"],
+              "properties": {
+                "tile": {"type": "string"},
+                "port": {"type": "string"}
+              }
+            },
+            "destination": {
+              "type": "object",
+              "required": ["tile", "port"],
+              "properties": {
+                "tile": {"type": "string"},
+                "port": {"type": "string"}
+              }
+            },
+            "data_width": {"type": "integer"},
+            "properties": {
+              "type": "object",
+              "properties": {
+                "keep_pkt_header": {"type": "boolean"},
+                "priority_route": {"type": "boolean"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

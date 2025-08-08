@@ -1,0 +1,44 @@
+AIE Design Report: aie_design
+==================================================
+
+Tile: shim_noc_tile_0_0 (0, 0) - SHIM
+----------------------------------------
+LOCK [name|id|init]
+  in0_0_fwd_cons_prod_lock_0 | 2 | 1
+  in0_0_fwd_cons_cons_lock_0 | 3 | 0
+  in0_0_prod_lock_0 | 0 | 1
+  in0_0_cons_lock_0 | 1 | 0
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:1→(0, 1) DMA:5
+  packet
+  flow: local Ctrl:0→(0, 0) South:0
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:1←(0, 1) DMA:5
+  packet
+  flow: local South:0←(0, 0) Ctrl:0
+
+
+Tile: mem_tile_0_1 (0, 1) - MEM
+----------------------------------------
+L2 Memory: 256KB
+MEMORY [name|size|dtype|addr|bank]
+  in0_0_cons_buff_1 | 1024 | memref<1024xi32> | 0 | 0
+  in0_0_cons_buff_0 | 1024 | memref<1024xi32> | 65536 | 1
+
+LOCK [name|id|init]
+  in0_0_cons_prod_lock_0 | 0 | 2
+  in0_0_cons_cons_lock_0 | 1 | 0
+
+FLOW OUT [type|direction]
+  stream
+  flow: local DMA:5→(0, 0) DMA:1
+
+FLOW IN [type|direction]
+  stream
+  flow: local DMA:5←(0, 0) DMA:1
+
+

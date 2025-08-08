@@ -1,0 +1,296 @@
+{
+  "application": "vector_add_design",
+  "device": "npu2",
+  "tiles": {
+    "tile_0_0": {
+      "name": "shim_noc_tile_0_0",
+      "type": "SHIM",
+      "location": [0, 0],
+      "controller_id": {
+        "pkt_type": 0,
+        "pkt_id": 15
+      },
+      "locks": [
+        {
+          "id": 0,
+          "name": "input_prod_lock",
+          "init": 1
+        },
+        {
+          "id": 1,
+          "name": "input_cons_lock",
+          "init": 0
+        },
+        {
+          "id": 2,
+          "name": "output_prod_lock",
+          "init": 0
+        },
+        {
+          "id": 3,
+          "name": "output_cons_lock",
+          "init": 1
+        }
+      ]
+    },
+    "tile_0_1": {
+      "name": "mem_tile_0_1",
+      "type": "MEM",
+      "location": [0, 1],
+      "controller_id": {
+        "pkt_type": 0,
+        "pkt_id": 26
+      },
+      "locks": [
+        {
+          "id": 0,
+          "name": "mem_input_prod_lock",
+          "init": 2
+        },
+        {
+          "id": 1,
+          "name": "mem_input_cons_lock",
+          "init": 0
+        },
+        {
+          "id": 2,
+          "name": "mem_output_prod_lock",
+          "init": 0
+        },
+        {
+          "id": 3,
+          "name": "mem_output_cons_lock",
+          "init": 2
+        }
+      ],
+      "L2_memory": {
+        "total_size": 524288,
+        "buffers": [
+          {
+            "name": "input_buffer_a",
+            "address": 0,
+            "size": 4096,
+            "mem_bank": 0,
+            "type": "memref<1024xi32>"
+          },
+          {
+            "name": "input_buffer_b",
+            "address": 65536,
+            "size": 4096,
+            "mem_bank": 1,
+            "type": "memref<1024xi32>"
+          },
+          {
+            "name": "output_buffer",
+            "address": 131072,
+            "size": 4096,
+            "mem_bank": 0,
+            "type": "memref<1024xi32>"
+          }
+        ]
+      }
+    },
+    "tile_0_2": {
+      "name": "compute_tile_0_2",
+      "type": "COMPUTE",
+      "location": [0, 2],
+      "controller_id": {
+        "pkt_type": 0,
+        "pkt_id": 5
+      },
+      "locks": [
+        {
+          "id": 0,
+          "name": "ct_input_a_lock",
+          "init": 1
+        },
+        {
+          "id": 1,
+          "name": "ct_input_b_lock",
+          "init": 1
+        },
+        {
+          "id": 2,
+          "name": "ct_output_lock",
+          "init": 0
+        }
+      ],
+      "kernel": {
+        "name": "vector_add_kernel"
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "local_input_a",
+            "address": 0,
+            "size": 1024,
+            "mem_bank": 1,
+            "type": "memref<1024xi32>"
+          },
+          {
+            "name": "local_input_b",
+            "address": 1024,
+            "size": 1024,
+            "mem_bank": 2,
+            "type": "memref<1024xi32>"
+          },
+          {
+            "name": "local_output",
+            "address": 2048,
+            "size": 1024,
+            "mem_bank": 3,
+            "type": "memref<1024xi32>"
+          },
+          {
+            "name": "kernel_stack",
+            "address": 3072,
+            "size": 1024,
+            "mem_bank": 4,
+            "type": "memref<1024xi32>"
+          }
+        ]
+      }
+    },
+    "tile_1_2": {
+      "name": "compute_tile_1_2", 
+      "type": "COMPUTE",
+      "location": [1, 2],
+      "controller_id": {
+        "pkt_type": 0,
+        "pkt_id": 6
+      },
+      "locks": [
+        {
+          "id": 0,
+          "name": "ct2_input_lock",
+          "init": 1
+        },
+        {
+          "id": 1,
+          "name": "ct2_output_lock",
+          "init": 0
+        }
+      ],
+      "kernel": {
+        "name": "vector_scale_kernel"
+      },
+      "L1_memory": {
+        "total_size": 32768,
+        "buffers": [
+          {
+            "name": "buffer1",
+            "address": 0,
+            "size": 1024,
+            "mem_bank": 2,
+            "type": "memref<1024xi32>"
+          },
+          {
+            "name": "scaled_output",
+            "address": 1024,
+            "size": 1024,
+            "mem_bank": 4,
+            "type": "memref<1024xi32>"
+          }
+        ]
+      }
+    }
+  },
+  "connections": {
+    "input_flow_a": {
+      "type": "stream",
+      "source": {
+        "tile": "tile_0_0",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "tile_0_1", 
+        "port": "DMA:0"
+      }
+    },
+    "input_flow_b": {
+      "type": "stream",
+      "source": {
+        "tile": "tile_0_0",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "tile_0_1",
+        "port": "DMA:1"
+      }
+    },
+    "mem_to_compute_a": {
+      "type": "stream",
+      "source": {
+        "tile": "tile_0_1",
+        "port": "DMA:2"
+      },
+      "destination": {
+        "tile": "tile_0_2",
+        "port": "DMA:0"
+      }
+    },
+    "mem_to_compute_b": {
+      "type": "stream",
+      "source": {
+        "tile": "tile_0_1",
+        "port": "DMA:3"
+      },
+      "destination": {
+        "tile": "tile_0_2",
+        "port": "DMA:1"
+      }
+    },
+    "compute_to_mem": {
+      "type": "stream",
+      "source": {
+        "tile": "tile_0_2",
+        "port": "DMA:0"
+      },
+      "destination": {
+        "tile": "tile_0_1",
+        "port": "DMA:4"
+      }
+    },
+    "output_flow": {
+      "type": "stream",
+      "source": {
+        "tile": "tile_0_1",
+        "port": "DMA:5"
+      },
+      "destination": {
+        "tile": "tile_0_0",
+        "port": "DMA:2"
+      }
+    },
+    "cascade": {
+      "type": "cascade",
+      "source": {
+        "tile": "tile_0_2",
+        "port": "Out"
+      },
+      "destination": {
+        "tile": "tile_1_2",
+        "port": "In"
+      }
+    },
+    "control_packet": {
+      "type": "packet_flow",
+      "id": 15,
+      "source": {
+        "tile": "tile_0_0",
+        "port": "TileControl:0"
+      },
+      "destination": {
+        "tile": "tile_0_0",
+        "port": "South:0"
+      },
+      "properties": {
+        "keep_pkt_header": true,
+        "priority_route": true
+      }
+    }
+  }
+}
+
+

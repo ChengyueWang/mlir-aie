@@ -1,0 +1,116 @@
+{
+  "application": "aie_design",
+  "device": "npu2",
+  "tiles": {
+    "(0, 0)": {
+      "name": "shim_noc_tile_0_0",
+      "type": "SHIM",
+      "location": [
+        0,
+        0
+      ],
+      "controller_id": {
+        "pkt_id": 15
+      },
+      "locks": [
+        {
+          "name": "in0_0_fwd_cons_prod_lock_0",
+          "id": 2,
+          "init": 1
+        },
+        {
+          "name": "in0_0_fwd_cons_cons_lock_0",
+          "id": 3,
+          "init": 0
+        },
+        {
+          "name": "in0_0_prod_lock_0",
+          "id": 0,
+          "init": 1
+        },
+        {
+          "name": "in0_0_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    },
+    "(0, 1)": {
+      "name": "mem_tile_0_1",
+      "type": "MEM",
+      "location": [
+        0,
+        1
+      ],
+      "controller_id": {
+        "pkt_id": 26
+      },
+      "L2_memory": {
+        "total_size": 262144,
+        "buffers": [
+          {
+            "name": "in0_0_cons_buff_1",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 0,
+            "mem_bank": 0
+          },
+          {
+            "name": "in0_0_cons_buff_0",
+            "size": 1024,
+            "type": "memref<1024xi32>",
+            "address": 65536,
+            "mem_bank": 1
+          }
+        ]
+      },
+      "locks": [
+        {
+          "name": "in0_0_cons_prod_lock_0",
+          "id": 0,
+          "init": 2
+        },
+        {
+          "name": "in0_0_cons_cons_lock_0",
+          "id": 1,
+          "init": 0
+        }
+      ]
+    }
+  },
+  "connections": {
+    "flow_0": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 0)",
+        "port": "DMA:1"
+      },
+      "destination": {
+        "tile": "(0, 1)",
+        "port": "DMA:5"
+      }
+    },
+    "flow_1": {
+      "type": "stream",
+      "source": {
+        "tile": "(0, 1)",
+        "port": "DMA:5"
+      },
+      "destination": {
+        "tile": "(0, 0)",
+        "port": "DMA:1"
+      }
+    },
+    "packet_flow_15": {
+      "type": "packet",
+      "source": {
+        "tile": "(0, 0)",
+        "port": "TileControl : 0"
+      },
+      "destination": {
+        "tile": "(0, 0)",
+        "port": "South : 0"
+      }
+    }
+  }
+}
