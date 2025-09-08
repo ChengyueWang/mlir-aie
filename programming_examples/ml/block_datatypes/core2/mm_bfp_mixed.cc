@@ -124,11 +124,6 @@ void matmul_8x8x8_kernel(bfloat16 *__restrict inA,
                   bfloat16 *__restrict outC, int B_stream_index) {
                   // float *__restrict outC) {
 
-  // aie::accum<accfloat, 64> chess_storage(dm0) acc0_data = aie::zeros<accfloat, 64>();
-  // aie::accum<accfloat, 64> chess_storage(dm1) acc1_data = aie::zeros<accfloat, 64>();
-  // aie::accum<accfloat, 64> chess_storage(dm2) acc2_data = aie::zeros<accfloat, 64>();
-  // aie::accum<accfloat, 64> chess_storage(dm3) acc3_data = aie::zeros<accfloat, 64>();
-
   aie::accum<accfloat, 64> chess_storage(dm0) acc0_data ( aie::load_v<64>(outC)   ) ;
   aie::accum<accfloat, 64> chess_storage(dm1) acc1_data ( aie::load_v<64>(outC + 64)   ) ;
   aie::accum<accfloat, 64> chess_storage(dm2) acc2_data ( aie::load_v<64>(outC + 128)   ) ;
@@ -141,34 +136,17 @@ void matmul_8x8x8_kernel(bfloat16 *__restrict inA,
   aie::block_vector<bfp16ebs8, 64> chess_storage(ex1) B1_data_bfp = pB_stream.pop();
   aie::block_vector<bfp16ebs8, 64> chess_storage(ex2) B2_data_bfp = pB_stream.pop();
   aie::block_vector<bfp16ebs8, 64> chess_storage(ex3) B3_data_bfp = pB_stream.pop();
-  // aie::block_vector<bfp16ebs8, 64> B0_data_bfp = pB_stream.pop();
-  // aie::block_vector<bfp16ebs8, 64> B1_data_bfp = pB_stream.pop();
-  // aie::block_vector<bfp16ebs8, 64> B2_data_bfp = pB_stream.pop();
-  // aie::block_vector<bfp16ebs8, 64> B3_data_bfp = pB_stream.pop();
 
   aie::vector<bfloat16, 64> A0_data_bf16;
   A0_data_bf16 = aie::load_v<64>(inA);  inA += 64;
   aie::accum<accfloat, 64> chess_storage(dm4) A0_data_float;
   A0_data_float = A0_data_bf16; 
   aie::block_vector<bfp16ebs8, 64> chess_storage(ex10) A0_data_bfp = A0_data_float.to_vector<bfp16ebs8>();
-  // aie::block_vector<bfp16ebs8, 64> A0_data_bfp = A0_data_float.to_vector<bfp16ebs8>();
 
-
-  // for (int tile_n = 0; tile_n < N/32; tile_n ++ ){
-    // AIE_PEEL_PIPELINED_LOOP(2)
-    // AIE_NO_PREPARE_FOR_PIPELINING
-    // AIE_KEEP_SW_LOOP
-    // for (int tile_n = 0; tile_n <4; tile_n ++ )
-    // {
     aie::block_vector<bfp16ebs8, 64> chess_storage(ex4) B0_data_bfp_pong = pB_stream.pop();
     aie::block_vector<bfp16ebs8, 64> chess_storage(ex5) B1_data_bfp_pong = pB_stream.pop();
     aie::block_vector<bfp16ebs8, 64> chess_storage(ex6) B2_data_bfp_pong = pB_stream.pop();
     aie::block_vector<bfp16ebs8, 64> chess_storage(ex7) B3_data_bfp_pong = pB_stream.pop();
-
-    // aie::block_vector<bfp16ebs8, 64> B0_data_bfp_pong = pB_stream.pop();
-    // aie::block_vector<bfp16ebs8, 64> B1_data_bfp_pong = pB_stream.pop();
-    // aie::block_vector<bfp16ebs8, 64> B2_data_bfp_pong = pB_stream.pop();
-    // aie::block_vector<bfp16ebs8, 64> B3_data_bfp_pong = pB_stream.pop();
 
     A0_data_bf16 = aie::load_v<64>(inA);
     inA += 64;
@@ -181,11 +159,6 @@ void matmul_8x8x8_kernel(bfloat16 *__restrict inA,
     acc2_data = mac_8x8_8x8T(A0_data_bfp, B2_data_bfp, acc2_data);
     acc3_data = mac_8x8_8x8T(A0_data_bfp, B3_data_bfp, acc3_data);
 
-  // chess_report(acc0_data);
-    // chess_report(acc1_data);
-    // chess_report(acc2_data);
-    // chess_report(acc3_data);
-
     A0_data_bf16 = aie::load_v<64>(inA);
     inA += 64;
     A0_data_float = A0_data_bf16;
@@ -285,121 +258,6 @@ void matmul_8x8x8_kernel(bfloat16 *__restrict inA,
     acc2_data = mac_8x8_8x8T(A0_data_bfp_pong, B2_data_bfp_pong, acc2_data);
     acc3_data = mac_8x8_8x8T(A0_data_bfp_pong, B3_data_bfp_pong, acc3_data);
 
-/////////////////////
-
-    // A0_data_bf16 = aie::load_v<64>(inA);
-    // inA += 64;
-    // A0_data_float = A0_data_bf16;
-    // A0_data_bfp_pong = A0_data_float.to_vector<bfp16ebs8>();
-    // B0_data_bfp_pong = pB_stream.pop();
-    // B1_data_bfp_pong = pB_stream.pop();
-    // B2_data_bfp_pong = pB_stream.pop();
-    // B3_data_bfp_pong = pB_stream.pop();
-    // acc0_data = mac_8x8_8x8T(A0_data_bfp, B0_data_bfp, acc0_data);
-    // acc1_data = mac_8x8_8x8T(A0_data_bfp, B1_data_bfp, acc1_data);
-    // acc2_data = mac_8x8_8x8T(A0_data_bfp, B2_data_bfp, acc2_data);
-    // acc3_data = mac_8x8_8x8T(A0_data_bfp, B3_data_bfp, acc3_data);
-
-
-    // A0_data_bf16 = aie::load_v<64>(inA);
-    // inA += 64;
-    // A0_data_float = A0_data_bf16;
-    // A0_data_bfp = A0_data_float.to_vector<bfp16ebs8>();
-    // B0_data_bfp = pB_stream.pop();
-    // B1_data_bfp = pB_stream.pop();
-    // B2_data_bfp = pB_stream.pop();
-    // B3_data_bfp = pB_stream.pop();
-    // acc0_data = mac_8x8_8x8T(A0_data_bfp_pong, B0_data_bfp_pong, acc0_data);
-    // acc1_data = mac_8x8_8x8T(A0_data_bfp_pong, B1_data_bfp_pong, acc1_data);
-    // acc2_data = mac_8x8_8x8T(A0_data_bfp_pong, B2_data_bfp_pong, acc2_data);
-    // acc3_data = mac_8x8_8x8T(A0_data_bfp_pong, B3_data_bfp_pong, acc3_data);
-
-
-    // A0_data_bf16 = aie::load_v<64>(inA);
-    // inA += 64;
-    // A0_data_float = A0_data_bf16;
-    // A0_data_bfp_pong = A0_data_float.to_vector<bfp16ebs8>();
-    // B0_data_bfp_pong = pB_stream.pop();
-    // B1_data_bfp_pong = pB_stream.pop();
-    // B2_data_bfp_pong = pB_stream.pop();
-    // B3_data_bfp_pong = pB_stream.pop();
-    // acc0_data = mac_8x8_8x8T(A0_data_bfp, B0_data_bfp, acc0_data);
-    // acc1_data = mac_8x8_8x8T(A0_data_bfp, B1_data_bfp, acc1_data);
-    // acc2_data = mac_8x8_8x8T(A0_data_bfp, B2_data_bfp, acc2_data);
-    // acc3_data = mac_8x8_8x8T(A0_data_bfp, B3_data_bfp, acc3_data);
-
-
-    // A0_data_bf16 = aie::load_v<64>(inA);
-    // inA += 64;
-    // A0_data_float = A0_data_bf16;
-    // A0_data_bfp = A0_data_float.to_vector<bfp16ebs8>();
-    // B0_data_bfp = pB_stream.pop();
-    // B1_data_bfp = pB_stream.pop();
-    // B2_data_bfp = pB_stream.pop();
-    // B3_data_bfp = pB_stream.pop();
-    // acc0_data = mac_8x8_8x8T(A0_data_bfp_pong, B0_data_bfp_pong, acc0_data);
-    // acc1_data = mac_8x8_8x8T(A0_data_bfp_pong, B1_data_bfp_pong, acc1_data);
-    // acc2_data = mac_8x8_8x8T(A0_data_bfp_pong, B2_data_bfp_pong, acc2_data);
-    // acc3_data = mac_8x8_8x8T(A0_data_bfp_pong, B3_data_bfp_pong, acc3_data);
-
-
-    // A0_data_bf16 = aie::load_v<64>(inA);
-    // inA += 64;
-    // A0_data_float = A0_data_bf16;
-    // A0_data_bfp_pong = A0_data_float.to_vector<bfp16ebs8>();
-    // B0_data_bfp_pong = pB_stream.pop();
-    // B1_data_bfp_pong = pB_stream.pop();
-    // B2_data_bfp_pong = pB_stream.pop();
-    // B3_data_bfp_pong = pB_stream.pop();
-    // acc0_data = mac_8x8_8x8T(A0_data_bfp, B0_data_bfp, acc0_data);
-    // acc1_data = mac_8x8_8x8T(A0_data_bfp, B1_data_bfp, acc1_data);
-    // acc2_data = mac_8x8_8x8T(A0_data_bfp, B2_data_bfp, acc2_data);
-    // acc3_data = mac_8x8_8x8T(A0_data_bfp, B3_data_bfp, acc3_data);
-
-
-    // A0_data_bf16 = aie::load_v<64>(inA);
-    // inA += 64;
-    // A0_data_float = A0_data_bf16;
-    // A0_data_bfp = A0_data_float.to_vector<bfp16ebs8>();
-    // B0_data_bfp = pB_stream.pop();
-    // B1_data_bfp = pB_stream.pop();
-    // B2_data_bfp = pB_stream.pop();
-    // B3_data_bfp = pB_stream.pop();
-    // acc0_data = mac_8x8_8x8T(A0_data_bfp_pong, B0_data_bfp_pong, acc0_data);
-    // acc1_data = mac_8x8_8x8T(A0_data_bfp_pong, B1_data_bfp_pong, acc1_data);
-    // acc2_data = mac_8x8_8x8T(A0_data_bfp_pong, B2_data_bfp_pong, acc2_data);
-    // acc3_data = mac_8x8_8x8T(A0_data_bfp_pong, B3_data_bfp_pong, acc3_data);
-
-    // A0_data_bf16 = aie::load_v<64>(inA);
-    // inA += 64;
-    // A0_data_float = A0_data_bf16;
-    // A0_data_bfp_pong = A0_data_float.to_vector<bfp16ebs8>();
-    // B0_data_bfp_pong = pB_stream.pop();
-    // B1_data_bfp_pong = pB_stream.pop();
-    // B2_data_bfp_pong = pB_stream.pop();
-    // B3_data_bfp_pong = pB_stream.pop();
-    // acc0_data = mac_8x8_8x8T(A0_data_bfp, B0_data_bfp, acc0_data);
-    // acc1_data = mac_8x8_8x8T(A0_data_bfp, B1_data_bfp, acc1_data);
-    // acc2_data = mac_8x8_8x8T(A0_data_bfp, B2_data_bfp, acc2_data);
-    // acc3_data = mac_8x8_8x8T(A0_data_bfp, B3_data_bfp, acc3_data);
-
-
-    // // A0_data_bf16 = aie::load_v<64>(inA);
-    // // inA += 64;
-    // // A0_data_float = A0_data_bf16;
-    // // A0_data_bfp = A0_data_float.to_vector<bfp16ebs8>();
-    // // B0_data_bfp = pB_stream.pop();
-    // // B1_data_bfp = pB_stream.pop();
-    // // B2_data_bfp = pB_stream.pop();
-    // // B3_data_bfp = pB_stream.pop();
-    // acc0_data = mac_8x8_8x8T(A0_data_bfp_pong, B0_data_bfp_pong, acc0_data);
-    // acc1_data = mac_8x8_8x8T(A0_data_bfp_pong, B1_data_bfp_pong, acc1_data);
-    // acc2_data = mac_8x8_8x8T(A0_data_bfp_pong, B2_data_bfp_pong, acc2_data);
-    // acc3_data = mac_8x8_8x8T(A0_data_bfp_pong, B3_data_bfp_pong, acc3_data);
-
-
-
-    // inA = inA - 128*4;
     aie::store_v(outC, acc0_data.template to_vector<bfloat16>());
     outC += 64;
     aie::store_v(outC, acc1_data.template to_vector<bfloat16>());
@@ -448,8 +306,6 @@ void matmul_vectorized_different_datatypes(bfloat16 *__restrict pA,
     }
     event1();
 
-    // matmul_vectorized_2x2_bfp16_bf16<m / r, k / s, n / t, r, s, t>(pA, pB, pC);
-  // }
 }
 
 void zero_kernel_bf16(bfloat16 *__restrict cOut) {
